@@ -48,25 +48,33 @@ export default class Main {
         return camera;
     }
 
-    createMoveCamera(middle){
-        this.cameraToMove = this.createArcCamera(this.scene,new BABYLON.Vector3(middle,0,0));
+    createMoveCamera(middle) {
+        this.cameraToMove = this.createArcCamera(this.scene, new BABYLON.Vector3(middle, 0, 0));
         this.lightForMove = new BABYLON.PointLight("light", new BABYLON.Vector3(middle, 70, 0), this.scene);
-        this.lightForMove.intensity=0.5;
-        this.cameraToMove.radius=this.radius;
-        this.cameraToMove.turn = () =>{
-            if(this.cameraToMove.alpha<3.14){
+        this.lightForMove.intensity = 0.5;
+        this.cameraToMove.radius = this.radius;
+        this.cameraToMove.turn = () => {
+            if (this.cameraToMove.alpha < 3.14) {
                 this.cameraToMove.move();
                 return false;
-            }
-            this.scene.activeCamera=this.camera;
+            } /*else {
+                if (this.cameraToMove.radius > 80) {
+                    this.cameraToMove.target = this.boule.position
+                    this.cameraToMove.radius -= 1;
+                    if (this.cameraToMove.beta < this.camera.beta) this.cameraToMove.beta += 0.01;
+                    if (this.cameraToMove.beta > this.camera.beta) this.cameraToMove.beta -= 0.01;
+                    return false;
+                }
+            }*/
+            this.scene.activeCamera = this.camera;
             this.cameraToMove.dispose();
             this.lightForMove.dispose();
-            this.turn=false;
-            this.canMove=true;
+            this.turn = false;
+            this.canMove = true;
             return true;
         }
-
     }
+
 
     createGround(scene, x, y, z, id) {
         let ground = BABYLON.Mesh.CreateGround("ground_" + id, 500, 500, 1, scene);
@@ -229,10 +237,11 @@ export default class Main {
     collision() {
         if (!this.boule.actionManager)this.boule.actionManager = new BABYLON.ActionManager(this.scene);
         this.scene.jetons.forEach(jeton => {
-            this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            jeton.actionManager = new BABYLON.ActionManager(this.scene);
+            jeton.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                    parameter: jeton
+                    parameter: this.boule
                 },
                 () => {
                     if (jeton === this.key) {
@@ -248,6 +257,7 @@ export default class Main {
                         }
                         jeton.physicsImpostor.dispose();
                         jeton.dispose();
+                        this.scene.jetons.splice(this.scene.jetons.indexOf(jeton), 1);
 
                         var music = new BABYLON.Sound("Violons", "sounds/coin.wav", this.scene, null, {
                             loop: false,
@@ -257,18 +267,18 @@ export default class Main {
                         this.nbrJetonToGenerate -= 1;
 
                     }
-                    this.affichage.dispose();
-                    this.printer.printNumberOfJeton();
-
+                    if (this.affichage) this.affichage.dispose();
+                    if ((this.level % this.nbrLevel) !== 10 || (this.level % this.nbrLevel) !== 9) this.printer.printNumberOfJeton();
 
                 }
             ));
         });
         if (this.key) {
-            this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            this.faille.actionManager = new BABYLON.ActionManager(this.scene);
+            this.faille.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                    parameter: this.faille
+                    parameter: this.boule
                 },
                 () => {
                     if (this.boule.key) this.faille.dispose();
@@ -277,10 +287,11 @@ export default class Main {
                 }));
         }
         this.allStep.forEach(step => {
-            this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            if (!step.actionManager)step.actionManager = new BABYLON.ActionManager(this.scene);
+            step.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
-                    parameter: step
+                    parameter: this.boule
                 },
                 () => {
                     if (step.physicsImpostor && this.inputStates.space) {

@@ -250,7 +250,7 @@ export default class Obstacles {
             step.disparait = () => {
                 step.dispose();
             }
-            step.actionManager = new BABYLON.ActionManager(this.scene);
+            if (!step.actionManager)step.actionManager = new BABYLON.ActionManager(this.scene);
             step.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
