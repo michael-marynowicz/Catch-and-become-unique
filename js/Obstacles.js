@@ -535,7 +535,7 @@ export default class Obstacles {
     ascenseur(x,y,z){
         let ascenseur=this.createStep(20, 20, x, y , z, true);
         let life = this.generatorToken.createLife(x,y+5,z);
-        ascenseur.appendChild(life);
+        ascenseur.addChild(life);
         if (!this.main.boule.actionManager)this.main.boule.actionManager = new BABYLON.ActionManager(this.scene);
         this.main.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
             {
