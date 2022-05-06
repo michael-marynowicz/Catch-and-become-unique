@@ -30,7 +30,7 @@ function startGame() {
     scene.activeCamera = main.createArcCamera(scene, main.boule);
 
     main.camera = scene.activeCamera;
-    main.level=-1;
+    main.level=3;
 
     engine.runRenderLoop(() => {
         let reLoadLevel = main.events(ground);

@@ -87,11 +87,10 @@ export default class Main {
         let hit = this.scene.pickWithRay(ray, (mesh) => {
             return (mesh !== myMesh);
         });
-        if (hit.pickedMesh) {
+
+        if (hit.pickedMesh && hit.pickedMesh.name!=="boss") {
             this.jump = true;
             this.impulseDown = true;
-        }else{
-            this.jump = false;
         }
     }
 
