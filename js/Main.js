@@ -224,10 +224,12 @@ export default class Main {
             } else if (event.key === " ") {
                 this.inputStates.space = false;
             }else if (event.key === "p") {
+                if(this.canMove) {
+                    this.cameraToMove = undefined;
+                    this.lightForMove.dispose();
+                    this.scene.activeCamera = this.camera;
+                }
                 this.inputStates.p = false;
-                this.cameraToMove=undefined;
-                this.lightForMove.dispose();
-                this.scene.activeCamera=this.camera;
             }
         }, false);
     }

@@ -27,7 +27,7 @@ export default class Affichage{
             var image = new BABYLON.GUI.Image("but_"+i, "images/ball_earth.jpg");
             image.height = "50px";
             image.width = "50px";
-            image.top = 5;
+            image.top = 2;
             image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
             image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
             image.left = `${acc+3} px`;
@@ -41,13 +41,13 @@ export default class Affichage{
 
 
         var rect1 = new BABYLON.GUI.Rectangle();
-        rect1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        rect1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-        rect1.height = "55px";
-        rect1.width=`${acc+10}px`;
-        rect1.left = "5px";
+        /*rect1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        rect1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;*/
+        rect1.height = "7%";
+        rect1.width=`${(acc/50)*this.main.nbrLife+2 }%`;
+        rect1.left = "-44%";
         rect1.cornerRadius = 20;
-        rect1.top = -320;
+        rect1.top = "-45%";
         rect1.color = "blue";
         rect1.thickness = 1;
         rect1.background = "grey";
