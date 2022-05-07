@@ -57,7 +57,7 @@ export default class Main {
             if (this.cameraToMove.alpha < 3.14) {
                 this.cameraToMove.move();
                 return false;
-            } /*else {
+            } else{
                 if (this.cameraToMove.radius > 80) {
                     this.cameraToMove.target = this.boule.position
                     this.cameraToMove.radius -= 1;
@@ -65,12 +65,13 @@ export default class Main {
                     if (this.cameraToMove.beta > this.camera.beta) this.cameraToMove.beta -= 0.01;
                     return false;
                 }
-            }*/
+            }
             this.scene.activeCamera = this.camera;
-            this.cameraToMove.dispose();
             this.lightForMove.dispose();
             this.turn = false;
             this.canMove = true;
+            this.cameraToMove.dispose();
+            this.cameraToMove = undefined;
             return true;
         }
     }
@@ -225,14 +226,14 @@ export default class Main {
                 this.inputStates.space = false;
             }else if (event.key === "p") {
                 if(this.canMove) {
-                    this.cameraToMove = undefined;
-                    this.lightForMove.dispose();
-                    this.scene.activeCamera = this.camera;
+                    this.resetCamera();
                 }
                 this.inputStates.p = false;
             }
         }, false);
     }
+
+
 
 
 
@@ -311,7 +312,8 @@ export default class Main {
 
     events(ground) {
         if (this.boule.intersectsMesh(ground, true) || this.pique ) {
-
+            this.resetCamera();
+            this.first=false;
             this.pique=false;
             this.boule.position = new BABYLON.Vector3(this.respawn.x, this.respawn.y, this.respawn.z);
             this.boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
@@ -340,8 +342,6 @@ export default class Main {
             }
             this.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel)+1);
 
-
-
         }
         if(this.access){
             this.printer.printLife();
@@ -354,11 +354,18 @@ export default class Main {
         this.music.stop();
         this.level = 0;
         this.nbrLife=3;
+        this.first=true;
         delete this.key;
         this.access=true;
         if (this.boule.key)this.boule.key=false;
         if (this.affichage)this.affichage.dispose();
 
+    }
+
+    resetCamera(){
+        this.cameraToMove = undefined;
+        this.lightForMove.dispose();
+        this.scene.activeCamera = this.camera;
     }
 
 

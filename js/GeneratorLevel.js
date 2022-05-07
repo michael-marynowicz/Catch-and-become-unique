@@ -24,6 +24,7 @@ export default class GeneratorLevel {
 
     generateLevel() {
         if (this.main.nbrJetonToGenerate === 0) {
+            this.main.first=true;
             this.deleteLevel();
             this.main.level += 1;
             this.createNewLevel = true;
@@ -45,8 +46,11 @@ export default class GeneratorLevel {
                     this.main.middle = 0;
                     this.createLevel0();
                     this.initialisation();
+
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if(this.main.turn){
+                    this.main.cameraToMove.turn()
+                }
                 break;
             }
             case 1: {
