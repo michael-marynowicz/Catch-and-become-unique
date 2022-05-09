@@ -37,7 +37,7 @@ export default class Particles{
         particleSystem.emitter = new BABYLON.Vector3(x, y, z);
         particleSystem.minSize = 0.1;
         particleSystem.maxSize = 0.5;
-        particleSystem.emitRate = 500;
+        particleSystem.emitRate = 1000;
         particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;     // to manage alpha
         particleSystem.minEmitPower = inverseGravity ? -5 : 5;
         particleSystem.maxEmitPower = inverseGravity ? -50 : 50;

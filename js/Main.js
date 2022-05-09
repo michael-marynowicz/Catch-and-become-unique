@@ -12,17 +12,17 @@ export default class Main {
     jump = true;
     impulseDown = false;
     level = 0;
-    nbrLevel=11;
+    nbrLevel = 11;
     move = false;
     faille;
     affichage;
-    life=[];
-    nbrLife=3;
-    access=true;
+    life = [];
+    nbrLife = 3;
+    access = true;
     floorisLava;
-    pique=false;
+    pique = false;
     camera;
-    turn=true;
+    turn = true;
 
 
     constructor(scene, ground, respawnPoint) {
@@ -33,7 +33,10 @@ export default class Main {
         this.allJeton = 5; // nombre de jetons crée au total dans le niveau
         this.respawn = respawnPoint;
         this.printer = new Affichage(this);
-        this.music = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {loop: true, autoplay: true});
+        this.music = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {
+            loop: true,
+            autoplay: true
+        });
         this.generatorParticles = new Particles(scene);
     }
 
@@ -42,31 +45,40 @@ export default class Main {
         camera.alpha = -3.14;
         camera.beta = 3.14 / 3;
         camera.move = () => {
-            camera.alpha+=0.02;
+            camera.alpha += 0.02;
             //if(this.lightForMove)this.lightForMove.position=camera.position;
         }
         return camera;
     }
 
-    createMoveCamera(middle){
-        this.cameraToMove = this.createArcCamera(this.scene,new BABYLON.Vector3(middle,0,0));
+    createMoveCamera(middle) {
+        this.cameraToMove = this.createArcCamera(this.scene, new BABYLON.Vector3(middle, 0, 0));
         this.lightForMove = new BABYLON.PointLight("light", new BABYLON.Vector3(middle, 70, 0), this.scene);
-        this.lightForMove.intensity=0.5;
-        this.cameraToMove.radius=this.radius;
-        this.cameraToMove.turn = () =>{
-            if(this.cameraToMove.alpha<3.14){
+        this.lightForMove.intensity = 0.5;
+        this.cameraToMove.radius = this.radius;
+        this.cameraToMove.turn = () => {
+            if (this.cameraToMove.alpha < 3.14) {
                 this.cameraToMove.move();
                 return false;
+            } else {
+                if (this.cameraToMove.radius > 80) {
+                    this.cameraToMove.target = this.boule.position
+                    this.cameraToMove.radius -= 1;
+                    if (this.cameraToMove.beta < this.camera.beta) this.cameraToMove.beta += 0.01;
+                    if (this.cameraToMove.beta > this.camera.beta) this.cameraToMove.beta -= 0.01;
+                    return false;
+                }
             }
-
             this.scene.activeCamera = this.camera;
             this.turn = false;
             this.canMove = true;
             this.lightForMove.dispose();
-
+            this.cameraToMove.dispose();
+            this.cameraToMove = undefined;
+            return true;
         }
-
     }
+
 
     createGround(scene, x, y, z, id) {
         let ground = BABYLON.Mesh.CreateGround("ground_" + id, 500, 500, 1, scene);
@@ -87,12 +99,10 @@ export default class Main {
         let hit = this.scene.pickWithRay(ray, (mesh) => {
             return (mesh !== myMesh);
         });
-        if (hit.pickedMesh && hit.hit && hit.pickedMesh.name!=="boss") {
 
+        if (hit.pickedMesh && hit.hit && hit.pickedMesh.name !== "boss") {
             this.jump = true;
             this.impulseDown = true;
-        }else{
-            this.jump = false;
         }
     }
 
@@ -106,7 +116,7 @@ export default class Main {
         });
 
 
-        boule.speed=2;
+        boule.speed = 2;
         boule.applyGravity = true;
         boule.material = new BABYLON.StandardMaterial("s-mat", this.scene);
         boule.material.diffuseTexture = new BABYLON.Texture("images/earth.jpg", this.scene);
@@ -128,50 +138,49 @@ export default class Main {
 
             let velocityLin = boule.physicsImpostor.getLinearVelocity();
             let angularVel = boule.physicsImpostor.getAngularVelocity();
-            if(this.canMove){
+            if (this.canMove) {
 
 
                 if (velocityLin.y < -1 && this.impulseDown) {
                     this.impulseDown = false;
                 }
                 if (this.inputStates.up && velocityLin.x < 30) {
-                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z-this.boule.speed+this.boule.speed/1.5, 0));
+                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z - this.boule.speed + this.boule.speed / 1.5, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x + this.boule.speed, velocityLin.y, velocityLin.z));
 
                 }
                 if (this.inputStates.down && velocityLin.x > -30) {
-                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0,angularVel.z+this.boule.speed-this.boule.speed/1.5, 0));
+                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z + this.boule.speed - this.boule.speed / 1.5, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x - this.boule.speed, velocityLin.y, velocityLin.z));
                 }
                 if (this.inputStates.left && velocityLin.z < 30) {
-                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x+this.boule.speed-this.boule.speed/1.5, 0, 0, 0));
+                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x + this.boule.speed - this.boule.speed / 1.5, 0, 0, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x, velocityLin.y, velocityLin.z + this.boule.speed));
                 }
                 if (this.inputStates.right && velocityLin.z > -30) {
-                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x-this.boule.speed+this.boule.speed/1.5, 0, 0, 0));
+                    boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x - this.boule.speed + this.boule.speed / 1.5, 0, 0, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x, velocityLin.y, velocityLin.z - this.boule.speed));
                 }
-                if (this.inputStates.space && this.jump && velocityLin.y<15) {
+                if (this.inputStates.space && this.jump && velocityLin.y < 15) {
                     this.jump = false;
                     boule.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 100, 0), boule.getAbsolutePosition());
 
                 }
-                if (this.inputStates.p){
-                    if(this.cameraToMove) {
+                if (this.inputStates.p) {
+                    if (this.cameraToMove) {
                         this.cameraToMove.move();
-                    }
-                    else {
+                    } else {
                         this.createMoveCamera(this.middle);
                     }
-                    this.scene.activeCamera=this.cameraToMove;
+                    this.scene.activeCamera = this.cameraToMove;
 
 
                 }
                 this.ground.position.x = boule.position.x;
                 this.ground.position.z = boule.position.z;
-                this.light.position.x = boule.position.x-20;
+                this.light.position.x = boule.position.x - 20;
                 this.light.position.z = boule.position.z;
-                if(this.level%this.nbrLevel===8)this.light.position.y = boule.position.y+70;
+                if (this.level % this.nbrLevel === 8) this.light.position.y = boule.position.y + 70;
             }
 
         };
@@ -199,7 +208,7 @@ export default class Main {
                 this.inputStates.down = true;
             } else if (event.key === " ") {
                 this.inputStates.space = true;
-            }else if (event.key === "p") {
+            } else if (event.key === "p") {
                 this.inputStates.p = true;
             }
 
@@ -217,24 +226,24 @@ export default class Main {
                 this.inputStates.down = false;
             } else if (event.key === " ") {
                 this.inputStates.space = false;
-            }else if (event.key === "p") {
+            } else if (event.key === "p") {
+                if (this.canMove) {
+                    this.resetCamera();
+                }
                 this.inputStates.p = false;
-                this.cameraToMove=undefined;
-                this.lightForMove.dispose();
-                this.scene.activeCamera=this.camera;
             }
         }, false);
     }
 
 
-
     collision() {
-        if (!this.boule.actionManager)this.boule.actionManager = new BABYLON.ActionManager(this.scene);
+        if (!this.boule.actionManager) this.boule.actionManager = new BABYLON.ActionManager(this.scene);
         this.scene.jetons.forEach(jeton => {
-            this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            jeton.actionManager = new BABYLON.ActionManager(this.scene);
+            jeton.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                    parameter: jeton
+                    parameter: this.boule
                 },
                 () => {
                     if (jeton === this.key) {
@@ -242,14 +251,15 @@ export default class Main {
                         this.key.particles.stop();
                     }
                     if (jeton.physicsImpostor) {
-                        if(jeton !== this.key){
-                            jeton.particles=this.generatorParticles.createParticlesForJeton(jeton.position.x,jeton.position.y+3,jeton.position.z)
+                        if (jeton !== this.key) {
+                            jeton.particles = this.generatorParticles.createParticlesForJeton(jeton.position.x, jeton.position.y + 3, jeton.position.z)
                             setTimeout(function () {
                                 jeton.particles.stop();
                             }.bind(this), 200);
                         }
                         jeton.physicsImpostor.dispose();
                         jeton.dispose();
+                        this.scene.jetons.splice(this.scene.jetons.indexOf(jeton), 1);
 
                         var music = new BABYLON.Sound("Violons", "sounds/coin.wav", this.scene, null, {
                             loop: false,
@@ -259,18 +269,18 @@ export default class Main {
                         this.nbrJetonToGenerate -= 1;
 
                     }
-                    this.affichage.dispose();
-                    this.printer.printNumberOfJeton();
-
+                    if (this.affichage) this.affichage.dispose();
+                    if ((this.level % this.nbrLevel) !== 10 || (this.level % this.nbrLevel) !== 9) this.printer.printNumberOfJeton();
 
                 }
             ));
         });
         if (this.key) {
-            this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            this.faille.actionManager = new BABYLON.ActionManager(this.scene);
+            this.faille.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                    parameter: this.faille
+                    parameter: this.boule
                 },
                 () => {
                     if (this.boule.key) this.faille.dispose();
@@ -279,10 +289,11 @@ export default class Main {
                 }));
         }
         this.allStep.forEach(step => {
-            this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            if (!step.actionManager) step.actionManager = new BABYLON.ActionManager(this.scene);
+            step.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
-                    parameter: step
+                    parameter: this.boule
                 },
                 () => {
                     if (step.physicsImpostor && this.inputStates.space) {
@@ -299,58 +310,71 @@ export default class Main {
     }
 
     events(ground) {
-        if (this.boule.intersectsMesh(ground, true) || this.pique ) {
-
-            this.pique=false;
+        if (this.boule.intersectsMesh(ground, true) || this.pique) {
+            this.resetCamera();
+            this.first = false;
+            this.pique = false;
             this.boule.position = new BABYLON.Vector3(this.respawn.x, this.respawn.y, this.respawn.z);
             this.boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
             this.boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
             this.life[this.nbrLife].dispose();
-            this.nbrLife-=1;
-            if(this.nbrLife===0){
-                var gameover = new BABYLON.Sound("gameover", "sounds/game_over.wav", this.scene, null, {loop: false, autoplay: true});
+            this.nbrLife -= 1;
+            if (this.nbrLife === 0) {
+                var gameover = new BABYLON.Sound("gameover", "sounds/game_over.wav", this.scene, null, {
+                    loop: false,
+                    autoplay: true
+                });
                 this.resetGame();
                 return true;
             }
-            var looseLife = new BABYLON.Sound("looseLife", "sounds/looseLife.wav", this.scene, null, {loop: false, autoplay: true});
-            if(this.nbrLife===1)this.music = new BABYLON.Sound("heartbeat", "sounds/heartbeat.wav", this.scene, null, {loop: true, autoplay: true});
+            var looseLife = new BABYLON.Sound("looseLife", "sounds/looseLife.wav", this.scene, null, {
+                loop: false,
+                autoplay: true
+            });
+            if (this.nbrLife === 1) this.music = new BABYLON.Sound("heartbeat", "sounds/heartbeat.wav", this.scene, null, {
+                loop: true,
+                autoplay: true
+            });
 
-            if (this.floorisLava || this.level%this.nbrLevel===10) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
-                if(this.affichage)this.affichage.dispose();
+            if (this.floorisLava || this.level % this.nbrLevel === 10) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
+                if (this.affichage) this.affichage.dispose();
                 return true;
             }
-            if(this.level%this.nbrLevel===3){
-                this.scene.getPhysicsEngine().setGravity(new BABYLON.Vector3(this.scene.getPhysicsEngine().gravity.x, -80,this.scene.getPhysicsEngine().gravity.z));
+            if (this.level % this.nbrLevel === 3) {
+                this.scene.getPhysicsEngine().setGravity(new BABYLON.Vector3(this.scene.getPhysicsEngine().gravity.x, -80, this.scene.getPhysicsEngine().gravity.z));
                 return false;
             }
-            if (this.level % this.nbrLevel===8) {
-                this.generatorLevel.ascenseur.position.y=this.respawn.y - 5;
-                this.generatorLevel.ascenseur.monte=false;
+            if (this.level % this.nbrLevel === 8) {
+                this.generatorLevel.ascenseur.position.y = this.respawn.y - 5;
+                this.generatorLevel.ascenseur.monte = false;
             }
-            this.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel)+1);
-
-
+            this.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
 
         }
-        if(this.access){
+        if (this.access) {
             this.printer.printLife();
-            this.access=false;
+            this.access = false;
         }
 
     }
 
-    resetGame(){
+    resetGame() {
         this.music.stop();
         this.level = 0;
-        this.nbrLife=3;
+        this.nbrLife = 3;
+        this.first = true;
         delete this.key;
-        this.access=true;
-        if (this.boule.key)this.boule.key=false;
-        if (this.affichage)this.affichage.dispose();
+        this.access = true;
+        if (this.boule.key) this.boule.key = false;
+        if (this.affichage) this.affichage.dispose();
 
     }
 
-
+    resetCamera() {
+        this.cameraToMove = undefined;
+        this.lightForMove.dispose();
+        this.scene.activeCamera = this.camera;
+    }
 
 
 }

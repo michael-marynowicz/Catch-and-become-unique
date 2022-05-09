@@ -44,8 +44,8 @@ export default class Menu{
             obj.nbrJetonToGenerate = menu.welcome ? 0 : obj.nbrJetonToGenerate;
             menu.clearHud();
             advancedTexture.dispose();
-            obj.canMove = menu.welcome;
-            obj.turn = true;
+            obj.canMove = !obj.first;
+            obj.turn = obj.first;
         });
         return button1;
     }
