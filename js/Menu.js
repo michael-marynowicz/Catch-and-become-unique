@@ -1,8 +1,17 @@
 export default class Menu{
+
+
+
     constructor(main,obstacle) {
         this.main = main;
         this.obstacle=obstacle;
         this.main.canMove=true;
+        this.hud = []
+    }
+
+    clearHud(){
+        this.hud.forEach(element => element.dispose());
+        this.hud = [];
     }
 
     createText(text){
@@ -14,6 +23,7 @@ export default class Menu{
         textblock.color = "white";
         textblock.fontWeight = "bold";
         textblock.cornerRadius = 20;
+        this.hud.push(textblock);
         return textblock
     }
 
@@ -21,7 +31,7 @@ export default class Menu{
     genButtonStart(advancedTexture){
         let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "START GAME");
         button1.fontSize = "5%";
-        button1.top = "-8%";
+        button1.top = "-10%";
         button1.width = "30%";
         button1.height = "10%";
         button1.color = "white";
@@ -29,12 +39,13 @@ export default class Menu{
         button1.background = "rgba(0, 0, 0, 0.5)";
         let obj = this.main;
         let menu = this;
-
+        this.hud.push(button1);
         button1.onPointerUpObservable.add(function() {
             obj.nbrJetonToGenerate = menu.welcome ? 0 : obj.nbrJetonToGenerate;
+            menu.clearHud();
             advancedTexture.dispose();
-            obj.canMove = !obj.first;
-            obj.turn = obj.first;
+            obj.canMove = menu.welcome;
+            obj.turn = true;
         });
         return button1;
     }
@@ -42,21 +53,78 @@ export default class Menu{
     genButtonHelp(btnStart,advancedTexture,myText){
         let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "HELP");
         button1.fontSize = "5%";
-        button1.top = "8%";
+        button1.top = "1%";
         button1.width = "30%";
         button1.height = "10%";
         button1.color = "white";
         button1.cornerRadius = 20;
         button1.background = "rgba(0, 0, 0, 0.5)";
         let main = this;
+        this.hud.push(button1);
         button1.onPointerUpObservable.add(function() {
-            button1.dispose();
-            btnStart.dispose();
             myText.dispose();
+            main.clearHud();
             main.genTextHelp(advancedTexture,myText);
         });
         return button1;
     }
+
+    genButtonStory(advancedTexture,myText){
+        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "STORY");
+        button1.fontSize = "5%";
+        button1.top = "12%";
+        button1.width = "30%";
+        button1.height = "10%";
+        button1.color = "white";
+        button1.cornerRadius = 20;
+        button1.background = "rgba(0, 0, 0, 0.5)";
+        let main = this;
+        this.hud.push(button1);
+        button1.onPointerUpObservable.add(function() {
+            myText.dispose();
+            main.clearHud();
+            main.genTextStory(advancedTexture,myText);
+        });
+        return button1;
+    }
+
+    genTextStory(advancedTexture,text){
+        let myText =  new BABYLON.GUI.TextBlock();
+        myText.text = "Lorem ipsum dolor sit amet\n" +
+            "Lorem ipsum dolor sit amet\n" +
+            "Lorem ipsum dolor sit amet\n" +
+            "Lorem ipsum dolor sit amet\n";
+        myText.outlineColor = "black";
+        myText.outlineWidth = 4;
+        myText.fontSize = "3%";
+        myText.top = "-10%";
+        myText.color = "white";
+        myText.fontWeight = "bold";
+
+        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "RETURN");
+        button1.fontSize = "2%";
+        button1.top = "19%";
+        button1.width = "10%";
+        button1.height = "5%";
+        button1.color = "white";
+        button1.cornerRadius = 20;
+        button1.background = "rgba(0, 0, 0, 0.5)";
+
+        this.hud.push(myText,button1);
+        let main = this;
+        button1.onPointerUpObservable.add(function() {
+            main.clearHud();
+            advancedTexture.addControl(text);
+            let buttonStart = main.genButtonStart(advancedTexture);
+            advancedTexture.addControl(buttonStart);
+            advancedTexture.addControl(main.genButtonHelp(buttonStart,advancedTexture,text));
+            advancedTexture.addControl(main.genButtonStory(advancedTexture,text));
+        });
+        advancedTexture.addControl(myText);
+        advancedTexture.addControl(button1);
+
+    }
+
     genTextHelp(advancedTexture,text){
         let myText =  new BABYLON.GUI.TextBlock();
         myText.text = "Overcome all obstacles to find your double\n and beat him to become unique";
@@ -118,22 +186,17 @@ export default class Menu{
         button1.color = "white";
         button1.cornerRadius = 20;
         button1.background = "rgba(0, 0, 0, 0.5)";
+
+        this.hud.push(button1,p_button,spacebarKey,fleche,zqsdKey,p_buttonText,toJump,toMove,or,myText);
+
         let main = this;
         button1.onPointerUpObservable.add(function() {
-            button1.dispose();
-            or.dispose();
-            toMove.dispose();
-            toJump.dispose();
-            spacebarKey.dispose();
-            p_buttonText.dispose();
-            zqsdKey.dispose();
-            fleche.dispose();
-            p_button.dispose();
-            myText.dispose();
+            main.clearHud();
             advancedTexture.addControl(text);
             let buttonStart = main.genButtonStart(advancedTexture);
             advancedTexture.addControl(buttonStart);
             advancedTexture.addControl(main.genButtonHelp(buttonStart,advancedTexture,text));
+            advancedTexture.addControl(main.genButtonStory(advancedTexture,text));
         });
         advancedTexture.addControl(myText);
         advancedTexture.addControl(or);
@@ -156,7 +219,7 @@ export default class Menu{
         let myText =  new BABYLON.GUI.TextBlock();
         let button1 = this.genButtonStart(advancedTexture);
         let buttonHlp = this.genButtonHelp(button1,advancedTexture,myText);
-
+        let buttonStory = this.genButtonStory(advancedTexture,myText);
 
 
         let rectangle = img ? new BABYLON.GUI.Image("name",img) : new BABYLON.GUI.Image("name", "images/welcome.jpg");
@@ -172,10 +235,13 @@ export default class Menu{
         myText.top = "-20%";
         myText.color = "white";
         myText.fontWeight = "bold";
+        this.hud.push(myText);
+
 
         advancedTexture.addControl(rectangle);
         advancedTexture.addControl(myText);
 
+        advancedTexture.addControl(buttonStory);
         advancedTexture.addControl(buttonHlp);
         advancedTexture.addControl(button1);
 

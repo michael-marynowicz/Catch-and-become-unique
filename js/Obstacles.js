@@ -159,11 +159,12 @@ export default class Obstacles {
     }
 
     coffreFort(x, y, z) {
-        let cote1 = this.createStep(20, 20, x + 10, y + 10, z + 10, false,"images/bunker.png");
-        let faille = this.createStep(20, 20, x - 10, y + 10, z + 10, false,"images/bunker.png");
-        let cote2 = this.createStep(22, 20, x, y + 10, z, false,"images/bunker.png");
-        let cote3 = this.createStep(22, 20, x, y + 10, z + 20, false,"images/bunker.png");
-        let toit = this.createStep(22, 22, x, y + 20, z + 10, false,"images/bunker.png");
+        //TODO faire un beau coffre
+        let cote1 = this.createStep(20, 20, x + 10, y + 10, z + 10, false);
+        let faille = this.createStep(20, 20, x - 10, y + 10, z + 10, false);
+        let cote2 = this.createStep(22, 20, x, y + 10, z, false);
+        let cote3 = this.createStep(22, 20, x, y + 10, z + 20, false);
+        let toit = this.createStep(22, 22, x, y + 20, z + 10, false);
 
         cote1.rotate(BABYLON.Axis.Z, 1.57);
         faille.rotate(BABYLON.Axis.Z, 1.57);
@@ -250,7 +251,7 @@ export default class Obstacles {
             step.disparait = () => {
                 step.dispose();
             }
-            if (!step.actionManager)step.actionManager = new BABYLON.ActionManager(this.scene);
+            step.actionManager = new BABYLON.ActionManager(this.scene);
             step.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
                 {
                     trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
@@ -535,7 +536,7 @@ export default class Obstacles {
     ascenseur(x,y,z){
         let ascenseur=this.createStep(20, 20, x, y , z, true);
         let life = this.generatorToken.createLife(x,y+5,z);
-        ascenseur.addChild(life);
+        ascenseur.appendChild(life);
         if (!this.main.boule.actionManager)this.main.boule.actionManager = new BABYLON.ActionManager(this.scene);
         this.main.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
             {

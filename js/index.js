@@ -54,6 +54,16 @@ function createScene() {
     scene.enablePhysics(new BABYLON.Vector3(0, -80, 0));
     createLights(scene);
 
+    /*var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size: 1000.0}, scene);
+    //skybox.scaling.y=0.25;
+    //skybox.position.y-=50;
+    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/galaxie2/galaxie", scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    skybox.material = skyboxMaterial;*/
     var envTexture = new BABYLON.CubeTexture("images/galaxie2/galaxie", scene);
     let skybox = scene.createDefaultSkybox(envTexture, false, 2000);
     skybox.position.y -= 350;
