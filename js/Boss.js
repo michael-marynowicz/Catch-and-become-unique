@@ -5,7 +5,7 @@ export default class Boss{
     }
 
     createBoss(){
-        let boule = new BABYLON.MeshBuilder.CreateSphere("heroboule", {diameter: 10}, this.scene);
+        let boule = new BABYLON.MeshBuilder.CreateSphere("boss", {diameter: 10}, this.scene);
         boule.applyGravity = true;
         boule.position = new BABYLON.Vector3(this.main.respawn.x, this.main.respawn.y, this.main.respawn.z);
         boule.checkCollisions = true;

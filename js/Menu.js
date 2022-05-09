@@ -33,8 +33,8 @@ export default class Menu{
         button1.onPointerUpObservable.add(function() {
             obj.nbrJetonToGenerate = menu.welcome ? 0 : obj.nbrJetonToGenerate;
             advancedTexture.dispose();
-            obj.canMove = menu.welcome;
-            obj.turn = true;
+            obj.canMove = !obj.first;
+            obj.turn = obj.first;
         });
         return button1;
     }
