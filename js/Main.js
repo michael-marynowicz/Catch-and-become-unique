@@ -58,19 +58,12 @@ export default class Main {
                 this.cameraToMove.move();
                 return false;
             }
-<<<<<<< Updated upstream
+
             this.scene.activeCamera = this.camera;
             this.turn = false;
             this.canMove = true;
             this.lightForMove.dispose();
-=======
-            this.scene.activeCamera=this.camera;
->>>>>>> Stashed changes
-            this.cameraToMove.dispose();
-            this.lightForMove.dispose();
-            this.turn=false;
-            this.canMove=true;
-            return true;
+
         }
 
     }
@@ -94,12 +87,8 @@ export default class Main {
         let hit = this.scene.pickWithRay(ray, (mesh) => {
             return (mesh !== myMesh);
         });
-<<<<<<< Updated upstream
-
         if (hit.pickedMesh && hit.hit && hit.pickedMesh.name!=="boss") {
-=======
-        if (hit.pickedMesh) {
->>>>>>> Stashed changes
+
             this.jump = true;
             this.impulseDown = true;
         }else{
