@@ -43,7 +43,7 @@ export default class Main {
         camera.beta = 3.14 / 3;
         camera.move = () => {
             camera.alpha+=0.02;
-            this.lightForMove.position=camera.position;
+            //if(this.lightForMove)this.lightForMove.position=camera.position;
         }
         return camera;
     }
@@ -67,9 +67,9 @@ export default class Main {
                 }
             }
             this.scene.activeCamera = this.camera;
-            this.lightForMove.dispose();
             this.turn = false;
             this.canMove = true;
+            this.lightForMove.dispose();
             this.cameraToMove.dispose();
             this.cameraToMove = undefined;
             return true;
@@ -97,7 +97,7 @@ export default class Main {
             return (mesh !== myMesh);
         });
 
-        if (hit.pickedMesh && hit.pickedMesh.name!=="boss") {
+        if (hit.pickedMesh && hit.hit) {
             this.jump = true;
             this.impulseDown = true;
         }
