@@ -97,7 +97,7 @@ export default class Main {
             return (mesh !== myMesh);
         });
 
-        if (hit.pickedMesh && hit.hit) {
+        if (hit.pickedMesh && hit.hit && hit.pickedMesh.name!=="boss") {
             this.jump = true;
             this.impulseDown = true;
         }
