@@ -42,10 +42,11 @@ export default class Menu{
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function() {
             obj.nbrJetonToGenerate = menu.welcome ? 0 : obj.nbrJetonToGenerate;
+            if (menu.helper)menu.hud.push(menu.rectangle);
             menu.clearHud();
             advancedTexture.dispose();
-            obj.canMove = !obj.first;
-            obj.turn = obj.first;
+            obj.canMove = !obj.first || menu.helper;
+            obj.turn = obj.first && !menu.helper;
         });
         return button1;
     }
@@ -210,23 +211,25 @@ export default class Menu{
         advancedTexture.addControl(p_button)
 
     }
-    menuMain(i,img){
+
+    menuMain(i, img, helper = false){
+        this.helper = helper
         this.main.canMove = false;
-        this.main.turn=false;
+        if(this.main.turn)this.main.turn=false;
         this.welcome = i === undefined;
         // GUI
         let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         let myText =  new BABYLON.GUI.TextBlock();
         let button1 = this.genButtonStart(advancedTexture);
-        let buttonHlp = this.genButtonHelp(button1,advancedTexture,myText);
+        let buttonHlp = this.genButtonHelp(button1,advancedTexture,myText,helper);
         let buttonStory = this.genButtonStory(advancedTexture,myText);
 
 
         let rectangle = img ? new BABYLON.GUI.Image("name",img) : new BABYLON.GUI.Image("name", "images/welcome.jpg");
         rectangle.width = "45%";
         rectangle.height = "50%";
-        rectangle.cornerRadius = 20;
-
+        rectangle.alpha = 0.8;
+        this.rectangle = rectangle
 
         myText.text = i ? "Level "+i : "Catch and Become Unique";
         myText.outlineColor = "black";
@@ -237,7 +240,7 @@ export default class Menu{
         myText.fontWeight = "bold";
         this.hud.push(myText);
 
-
+        if (i!==undefined)this.generateButtonHelper(i,img);
         advancedTexture.addControl(rectangle);
         advancedTexture.addControl(myText);
 
@@ -245,5 +248,28 @@ export default class Menu{
         advancedTexture.addControl(buttonHlp);
         advancedTexture.addControl(button1);
 
+    }
+
+    generateButtonHelper(i,img){
+        let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        let button1 = BABYLON.GUI.Button.CreateSimpleButton("helper", "?");
+        button1.fontSize = "3%";
+        button1.top = "45%";
+        button1.left = "45%";
+        button1.width = "3%";
+        button1.height = "3%";
+        button1.color = "white";
+        button1.cornerRadius = 100;
+        button1.background = "rgba(0, 0, 0, 0.5)";
+
+        let obj = this;
+        let main = this.main;
+        button1.onPointerUpObservable.add(function() {
+            if (main.canMove){
+                if(main.cameraToMove)main.resetCamera();
+                obj.menuMain(i, img, true)
+            }
+        });
+        advancedTexture.addControl(button1);
     }
 }

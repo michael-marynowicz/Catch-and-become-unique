@@ -140,7 +140,6 @@ export default class Main {
             let angularVel = boule.physicsImpostor.getAngularVelocity();
             if (this.canMove) {
 
-
                 if (velocityLin.y < -1 && this.impulseDown) {
                     this.impulseDown = false;
                 }
@@ -372,7 +371,7 @@ export default class Main {
 
     resetCamera() {
         this.cameraToMove = undefined;
-        this.lightForMove.dispose();
+        if(this.lightForMove)this.lightForMove.dispose();
         this.scene.activeCamera = this.camera;
     }
 

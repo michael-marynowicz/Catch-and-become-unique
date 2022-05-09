@@ -174,7 +174,7 @@ export default class GeneratorLevel {
     }
 
     initialisation() {
-        this.generatorMenu.menuMain((this.main.level % this.main.nbrLevel)+1)
+        this.generatorMenu.menuMain((this.main.level % this.main.nbrLevel) + 1)
         this.main.collision();
         this.createNewLevel = false;
         if (this.main.affichage) this.main.affichage.dispose();
