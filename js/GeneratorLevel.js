@@ -24,7 +24,7 @@ export default class GeneratorLevel {
 
     generateLevel() {
         if (this.main.nbrJetonToGenerate === 0) {
-            this.main.first=true;
+            this.main.hasNeverTurn=true;
             this.deleteLevel();
             this.main.level += 1;
             this.createNewLevel = true;
@@ -34,7 +34,6 @@ export default class GeneratorLevel {
             case -1: {
                 if (this.createNewLevel) {
                     this.main.canMove = false;
-                    this.obstacle.createStep(100, 100, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z,true);
                     this.generatorMenu.menuMain();
                     this.createNewLevel = false;
                 }
@@ -180,7 +179,7 @@ export default class GeneratorLevel {
         if (this.main.affichage) this.main.affichage.dispose();
         if ((this.main.level % this.main.nbrLevel) !== 10 || (this.main.level % this.main.nbrLevel) !== 9) this.printer.printNumberOfJeton();
         this.access = true;
-        if (this.main.first){
+        if (this.main.hasNeverTurn){
             this.main.createMoveCamera(this.main.middle);
             this.scene.activeCamera= this.main.cameraToMove;
         }

@@ -65,7 +65,7 @@ export default class Genie{
         });
         button2.onPointerUpObservable.add(function() {
             obj.nbrJetonToGenerate = 0;
-            obj.boule.speed+=1;
+            obj.boule.speed+=2;
             advancedTexture.dispose();
         });
         advancedTexture.addControl(button1);

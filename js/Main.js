@@ -1,5 +1,7 @@
 import Affichage from "./Affichage.js";
 import Particles from "./Particles.js";
+import Camera from "./Camera.js";
+import GeneratorLevel from "./GeneratorLevel.js";
 
 
 export default class Main {
@@ -33,6 +35,7 @@ export default class Main {
         this.allJeton = 5; // nombre de jetons crée au total dans le niveau
         this.respawn = respawnPoint;
         this.printer = new Affichage(this);
+        this.generatorCamera = new Camera(this);
         this.music = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {
             loop: true,
             autoplay: true
@@ -75,6 +78,7 @@ export default class Main {
             this.lightForMove.dispose();
             this.cameraToMove.dispose();
             this.cameraToMove = undefined;
+            this.skip.dispose();
             return true;
         }
     }
@@ -209,6 +213,13 @@ export default class Main {
                 this.inputStates.space = true;
             } else if (event.key === "p") {
                 this.inputStates.p = true;
+            } else if (event.keyCode === 13) {
+                if(this.turn){
+                    if(this.skip)this.skip.dispose();
+                    this.turn=false;
+                    this.canMove=true;
+                    this.resetCamera();
+                }
             }
 
         }, false);
@@ -311,7 +322,7 @@ export default class Main {
     events(ground) {
         if (this.boule.intersectsMesh(ground, true) || this.pique) {
             this.resetCamera();
-            this.first = false;
+            this.hasNeverTurn = false;
             this.pique = false;
             this.boule.position = new BABYLON.Vector3(this.respawn.x, this.respawn.y, this.respawn.z);
             this.boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
@@ -362,7 +373,7 @@ export default class Main {
         this.music.stop();
         this.level = 0;
         this.nbrLife = 3;
-        this.first = true;
+        this.hasNeverTurn = true;
         delete this.key;
         this.access = true;
         if (this.boule.key) this.boule.key = false;
@@ -371,10 +382,23 @@ export default class Main {
     }
 
     resetCamera() {
+        if(this.cameraToMove)this.cameraToMove.dispose();
         this.cameraToMove = undefined;
         if(this.lightForMove)this.lightForMove.dispose();
         this.scene.activeCamera = this.camera;
-        //return this.scene.activeCamera
+    }
+
+    initialisation(){
+        this.boule = this.createSphere();
+        this.scene.activeCamera = this.createArcCamera(this.scene, this.boule);
+        this.camera = this.scene.activeCamera;
+    }
+
+    setLevel(i){
+        this.level=i;
+        this.generatorLevel.createNewLevel=true;
+        this.turn=true;
+
     }
 
 

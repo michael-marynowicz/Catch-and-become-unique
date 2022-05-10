@@ -30,9 +30,10 @@ export default class Menu{
 
     genButtonStart(advancedTexture){
         let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "START GAME");
-        button1.fontSize = "5%";
-        button1.top = "-10%";
-        button1.width = "30%";
+        button1.fontSize = "4%";
+        button1.top = "-6%";
+        button1.width = "20%";
+        button1.left="-10%"
         button1.height = "10%";
         button1.color = "white";
         button1.cornerRadius = 20;
@@ -42,20 +43,23 @@ export default class Menu{
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function() {
             obj.nbrJetonToGenerate = menu.welcome ? 0 : obj.nbrJetonToGenerate;
-            if (menu.helper)menu.hud.push(menu.rectangle);
+            if(menu.welcome)obj.initialisation();
+            menu.hud.push(menu.rectangle);
+            if(obj.hasNeverTurn && !menu.helper)obj.skip = obj.generatorLevel.generatorMenu.genTextSkip();
             menu.clearHud();
             advancedTexture.dispose();
-            obj.canMove = !obj.first || menu.helper;
-            obj.turn = obj.first && !menu.helper;
+            obj.canMove = !obj.hasNeverTurn || menu.helper;
+            obj.turn = obj.hasNeverTurn && !menu.helper;
         });
         return button1;
     }
 
     genButtonHelp(btnStart,advancedTexture,myText){
         let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "HELP");
-        button1.fontSize = "5%";
-        button1.top = "1%";
-        button1.width = "30%";
+        button1.fontSize = "4%";
+        button1.top = "-6%";
+        button1.left="10%"
+        button1.width = "20%";
         button1.height = "10%";
         button1.color = "white";
         button1.cornerRadius = 20;
@@ -72,9 +76,10 @@ export default class Menu{
 
     genButtonStory(advancedTexture,myText){
         let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "STORY");
-        button1.fontSize = "5%";
-        button1.top = "12%";
-        button1.width = "30%";
+        button1.fontSize = "4%";
+        button1.top = "5%";
+        button1.left="-10%"
+        button1.width = "20%";
         button1.height = "10%";
         button1.color = "white";
         button1.cornerRadius = 20;
@@ -86,6 +91,28 @@ export default class Menu{
             main.clearHud();
             main.genTextStory(advancedTexture,myText);
         });
+        return button1;
+    }
+
+    genButtonChooseLevel(advancedTexture,myText){
+        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "CHOOSE LEVEL");
+        button1.fontSize = "4%";
+        button1.top = "5%";
+        button1.left="10%"
+        button1.width = "20%";
+        button1.height = "10%";
+        button1.color = "white";
+        button1.cornerRadius = 20;
+        button1.background = "rgba(0, 0, 0, 0.5)";
+        let main = this;
+        this.hud.push(button1);
+        button1.onPointerUpObservable.add(function() {
+            myText.dispose();
+            main.clearHud();
+            main.genAllLevel(myText);
+            main.buttonReturn(myText,10)
+        });
+
         return button1;
     }
 
@@ -101,28 +128,9 @@ export default class Menu{
         myText.top = "-10%";
         myText.color = "white";
         myText.fontWeight = "bold";
-
-        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "RETURN");
-        button1.fontSize = "2%";
-        button1.top = "19%";
-        button1.width = "10%";
-        button1.height = "5%";
-        button1.color = "white";
-        button1.cornerRadius = 20;
-        button1.background = "rgba(0, 0, 0, 0.5)";
-
-        this.hud.push(myText,button1);
-        let main = this;
-        button1.onPointerUpObservable.add(function() {
-            main.clearHud();
-            advancedTexture.addControl(text);
-            let buttonStart = main.genButtonStart(advancedTexture);
-            advancedTexture.addControl(buttonStart);
-            advancedTexture.addControl(main.genButtonHelp(buttonStart,advancedTexture,text));
-            advancedTexture.addControl(main.genButtonStory(advancedTexture,text));
-        });
+        this.hud.push(myText);
+        this.buttonReturn(text)
         advancedTexture.addControl(myText);
-        advancedTexture.addControl(button1);
 
     }
 
@@ -177,28 +185,8 @@ export default class Menu{
         p_button.left = "-9%";
         p_button.top = "10%";
 
-
-
-        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "RETURN");
-        button1.fontSize = "2%";
-        button1.top = "19%";
-        button1.width = "10%";
-        button1.height = "5%";
-        button1.color = "white";
-        button1.cornerRadius = 20;
-        button1.background = "rgba(0, 0, 0, 0.5)";
-
-        this.hud.push(button1,p_button,spacebarKey,fleche,zqsdKey,p_buttonText,toJump,toMove,or,myText);
-
-        let main = this;
-        button1.onPointerUpObservable.add(function() {
-            main.clearHud();
-            advancedTexture.addControl(text);
-            let buttonStart = main.genButtonStart(advancedTexture);
-            advancedTexture.addControl(buttonStart);
-            advancedTexture.addControl(main.genButtonHelp(buttonStart,advancedTexture,text));
-            advancedTexture.addControl(main.genButtonStory(advancedTexture,text));
-        });
+        this.hud.push(myText,p_button,spacebarKey,fleche,zqsdKey,p_buttonText,toJump,toMove,or);
+        this.buttonReturn(text)
         advancedTexture.addControl(myText);
         advancedTexture.addControl(or);
         advancedTexture.addControl(toMove);
@@ -207,7 +195,6 @@ export default class Menu{
         advancedTexture.addControl(zqsdKey);
         advancedTexture.addControl(fleche);
         advancedTexture.addControl(p_buttonText);
-        advancedTexture.addControl(button1);
         advancedTexture.addControl(p_button)
 
     }
@@ -223,6 +210,7 @@ export default class Menu{
         let button1 = this.genButtonStart(advancedTexture);
         let buttonHlp = this.genButtonHelp(button1,advancedTexture,myText,helper);
         let buttonStory = this.genButtonStory(advancedTexture,myText);
+        let buttonChooseLevel = this.genButtonChooseLevel(advancedTexture,myText)
 
 
         let rectangle = img ? new BABYLON.GUI.Image("name",img) : new BABYLON.GUI.Image("name", "images/welcome.jpg");
@@ -243,7 +231,7 @@ export default class Menu{
         if (i!==undefined)this.generateButtonHelper(i,img);
         advancedTexture.addControl(rectangle);
         advancedTexture.addControl(myText);
-
+        advancedTexture.addControl(buttonChooseLevel)
         advancedTexture.addControl(buttonStory);
         advancedTexture.addControl(buttonHlp);
         advancedTexture.addControl(button1);
@@ -271,5 +259,78 @@ export default class Menu{
             }
         });
         advancedTexture.addControl(button1);
+    }
+
+    genTextSkip(){
+        let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        let myText =  new BABYLON.GUI.TextBlock();
+        myText.text = "Press Enter to skip";
+        myText.outlineColor = "black";
+        myText.outlineWidth = 4;
+        myText.fontSize = "3%";
+        myText.top = "-45%";
+        myText.color = "white";
+        myText.fontWeight = "bold";
+        advancedTexture.addControl(myText);
+        return myText;
+    }
+
+    buttonReturn(myText, leftPosition = 0){
+        let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "RETURN");
+        button1.fontSize = "2%";
+        button1.top = "19%";
+        button1.left=`${leftPosition}%`
+        button1.width = "10%";
+        button1.height = "5%";
+        button1.color = "white";
+        button1.cornerRadius = 20;
+        button1.background = "rgba(0, 0, 0, 0.5)";
+
+        this.hud.push(myText,button1);
+        let main = this;
+        button1.onPointerUpObservable.add(function() {
+            main.clearHud();
+            advancedTexture.addControl(myText);
+            let buttonStart = main.genButtonStart(advancedTexture);
+            advancedTexture.addControl(buttonStart);
+            advancedTexture.addControl(main.genButtonHelp(buttonStart,advancedTexture,myText));
+            advancedTexture.addControl(main.genButtonStory(advancedTexture,myText));
+            advancedTexture.addControl(main.genButtonChooseLevel(advancedTexture,myText));
+        });
+        advancedTexture.addControl(button1);
+    }
+
+    genAllLevel(text){
+        let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        this.levels=[]
+        let acc=-20;
+        for (let i = 0; i < this.main.nbrLevel; i++) {
+            this.levels[i] = BABYLON.GUI.Button.CreateSimpleButton("but1", "Level "+(i+1));
+            this.levels[i].fontSize = "3%";
+            this.levels[i].top = `${acc}%`;
+            this.levels[i].width = "15%";
+            this.levels[i].left= i<this.main.nbrLevel/2 ? "-10%" : "10%"
+            this.levels[i].height = "5%";
+            this.levels[i].color = "white";
+            this.levels[i].cornerRadius = 20;
+            this.levels[i].background = "rgba(0, 0, 0, 0.5)";
+            acc= i===Math.round(this.main.nbrLevel/2)-1 ? -20 : acc+8;
+            let obj = this.main;
+            let menu = this;
+            this.hud.push(this.levels[i]);
+            this.levels[i].onPointerUpObservable.add(function() {
+                menu.clearHud();
+                menu.rectangle.dispose();
+                if(menu.welcome)obj.initialisation();
+                else {
+                    obj.generatorLevel.deleteLevel();
+                    obj.resetCamera();
+                }
+                obj.hasNeverTurn=true;
+                obj.setLevel(i);
+            });
+            advancedTexture.addControl(this.levels[i]);
+        }
     }
 }

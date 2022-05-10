@@ -10,6 +10,7 @@ let ground;
 let main;
 let obstacle;
 let light;
+let reLoadLevel;
 
 
 function startGame() {
@@ -23,18 +24,17 @@ function startGame() {
     obstacle = new Obstacles(main);
     main.modifySettings(window);
     main.light = light;
-    main.boule = main.createSphere();
 
     main.generatorLevel = new GeneratorLevel(obstacle, main);
-
-    scene.activeCamera = main.createArcCamera(scene, main.boule);
-
-    main.camera = scene.activeCamera;
+    scene.activeCamera = main.createArcCamera(scene, new BABYLON.Vector3(0,0,0));
     main.level=-1;
 
     engine.runRenderLoop(() => {
-        let reLoadLevel = main.events(ground);
-        main.boule.move();
+
+        if (main.boule){
+            reLoadLevel = main.events(ground);
+            main.boule.move();
+        }
         scene.render();
         if (reLoadLevel) {
             main.generatorLevel.createNewLevel = reLoadLevel;
