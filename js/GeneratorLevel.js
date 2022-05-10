@@ -180,8 +180,11 @@ export default class GeneratorLevel {
         if (this.main.affichage) this.main.affichage.dispose();
         if ((this.main.level % this.main.nbrLevel) !== 10 || (this.main.level % this.main.nbrLevel) !== 9) this.printer.printNumberOfJeton();
         this.access = true;
-        this.main.createMoveCamera(this.main.middle);
-        this.scene.activeCamera=this.main.cameraToMove;
+        if (this.main.first){
+            this.main.createMoveCamera(this.main.middle);
+            this.scene.activeCamera= this.main.cameraToMove;
+        }
+
         this.main.canMove=false;
     }
 

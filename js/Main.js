@@ -46,7 +46,7 @@ export default class Main {
         camera.beta = 3.14 / 3;
         camera.move = () => {
             camera.alpha += 0.02;
-            //if(this.lightForMove)this.lightForMove.position=camera.position;
+            if(this.lightForMove)this.lightForMove.position=camera.position;
         }
         return camera;
     }
@@ -64,8 +64,8 @@ export default class Main {
                 if (this.cameraToMove.radius > 80) {
                     this.cameraToMove.target = this.boule.position
                     this.cameraToMove.radius -= 1;
-                    if (this.cameraToMove.beta < this.camera.beta) this.cameraToMove.beta += 0.01;
-                    if (this.cameraToMove.beta > this.camera.beta) this.cameraToMove.beta -= 0.01;
+                    if (this.cameraToMove.beta < this.camera.beta) this.cameraToMove.beta += 0.02;
+                    if (this.cameraToMove.beta > this.camera.beta) this.cameraToMove.beta -= 0.02;
                     return false;
                 }
             }
@@ -337,6 +337,7 @@ export default class Main {
 
             if (this.floorisLava || this.level % this.nbrLevel === 10) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
                 if (this.affichage) this.affichage.dispose();
+                //this.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
                 return true;
             }
             if (this.level % this.nbrLevel === 3) {
@@ -373,6 +374,7 @@ export default class Main {
         this.cameraToMove = undefined;
         if(this.lightForMove)this.lightForMove.dispose();
         this.scene.activeCamera = this.camera;
+        //return this.scene.activeCamera
     }
 
 

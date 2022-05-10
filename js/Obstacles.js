@@ -160,11 +160,11 @@ export default class Obstacles {
 
     coffreFort(x, y, z) {
         //TODO faire un beau coffre
-        let cote1 = this.createStep(20, 20, x + 10, y + 10, z + 10, false);
-        let faille = this.createStep(20, 20, x - 10, y + 10, z + 10, false);
-        let cote2 = this.createStep(22, 20, x, y + 10, z, false);
-        let cote3 = this.createStep(22, 20, x, y + 10, z + 20, false);
-        let toit = this.createStep(22, 22, x, y + 20, z + 10, false);
+        let cote1 = this.createStep(20, 20, x + 10, y + 10, z + 10, false,"images/bunker.png");
+        let faille = this.createStep(20, 20, x - 10, y + 10, z + 10, false,"images/bunker.png");
+        let cote2 = this.createStep(22, 20, x, y + 10, z, false,"images/bunker.png");
+        let cote3 = this.createStep(22, 20, x, y + 10, z + 20, false,"images/bunker.png");
+        let toit = this.createStep(22, 22, x, y + 20, z + 10, false,"images/bunker.png");
 
         cote1.rotate(BABYLON.Axis.Z, 1.57);
         faille.rotate(BABYLON.Axis.Z, 1.57);
@@ -514,6 +514,7 @@ export default class Obstacles {
                 this.monte=false
                 physicsEngine.setGravity(new BABYLON.Vector3(physicsEngine.gravity.x, -80,physicsEngine.gravity.z));
                 this.main.camera.beta=3.14/3;
+                this.main.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
 
             }
             else if (retourneCamera===true){
@@ -523,6 +524,7 @@ export default class Obstacles {
                 this.main.generatorLevel.createNewLevel=retourneCamera;
                 this.main.generatorLevel.deleteLevel();
                 this.groundPlafond.dispose();
+                this.main.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
             }
 
         }
