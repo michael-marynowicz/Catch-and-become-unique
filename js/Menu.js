@@ -42,10 +42,10 @@ export default class Menu{
         let menu = this;
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function() {
-            obj.nbrJetonToGenerate = menu.welcome ? 0 : obj.nbrJetonToGenerate;
-            if(menu.welcome)obj.initialisation();
+            obj.nbrJetonToGenerate = (menu.welcome || menu.winOrLoose) ? 0 : obj.nbrJetonToGenerate;
+            if(menu.welcome && menu.winOrLoose===false)obj.initialisation();
             menu.hud.push(menu.rectangle);
-            if(obj.hasNeverTurn && !menu.helper)obj.skip = obj.generatorLevel.generatorMenu.genTextSkip();
+            if(obj.hasNeverTurn && !menu.helper && menu.winOrLoose===false)obj.skip = obj.generatorLevel.generatorMenu.genTextSkip();
             menu.clearHud();
             advancedTexture.dispose();
             obj.canMove = !obj.hasNeverTurn || menu.helper;
@@ -199,11 +199,12 @@ export default class Menu{
 
     }
 
-    menuMain(i, img, helper = false){
+    menuMain(i, img, helper = false, title = "Catch and Become Unique", winOrLoose = false){
+        this.winOrLoose=winOrLoose
         this.helper = helper
         this.main.canMove = false;
         if(this.main.turn)this.main.turn=false;
-        this.welcome = i === undefined;
+        this.welcome = (i === undefined) && (title=== "Catch and Become Unique");
         // GUI
         let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         let myText =  new BABYLON.GUI.TextBlock();
@@ -218,8 +219,7 @@ export default class Menu{
         rectangle.height = "50%";
         rectangle.alpha = 0.8;
         this.rectangle = rectangle
-
-        myText.text = i ? "Level "+i : "Catch and Become Unique";
+        myText.text = i ? "Level "+i : title;
         myText.outlineColor = "black";
         myText.outlineWidth = 4;
         myText.fontSize = "5%";
@@ -305,17 +305,17 @@ export default class Menu{
         let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         this.levels=[]
         let acc=-20;
-        for (let i = 0; i < this.main.nbrLevel; i++) {
-            this.levels[i] = BABYLON.GUI.Button.CreateSimpleButton("but1", "Level "+(i+1));
+        for (let i = 1; i < this.main.nbrLevel; i++) {
+            this.levels[i] = BABYLON.GUI.Button.CreateSimpleButton("but1", "Level "+i);
             this.levels[i].fontSize = "3%";
             this.levels[i].top = `${acc}%`;
             this.levels[i].width = "15%";
-            this.levels[i].left= i<this.main.nbrLevel/2 ? "-10%" : "10%"
+            this.levels[i].left= i<(this.main.nbrLevel/2)+1 ? "-10%" : "10%"
             this.levels[i].height = "5%";
             this.levels[i].color = "white";
             this.levels[i].cornerRadius = 20;
             this.levels[i].background = "rgba(0, 0, 0, 0.5)";
-            acc= i===Math.round(this.main.nbrLevel/2)-1 ? -20 : acc+8;
+            acc= i===Math.round(this.main.nbrLevel/2) ? -20 : acc+8;
             let obj = this.main;
             let menu = this;
             this.hud.push(this.levels[i]);

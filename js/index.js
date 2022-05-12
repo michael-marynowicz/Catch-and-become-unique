@@ -27,7 +27,7 @@ function startGame() {
 
     main.generatorLevel = new GeneratorLevel(obstacle, main);
     scene.activeCamera = main.createArcCamera(scene, new BABYLON.Vector3(0,0,0));
-    main.level=-1;
+    main.level=0;
 
     engine.runRenderLoop(() => {
 
@@ -36,11 +36,13 @@ function startGame() {
             main.boule.move();
         }
         scene.render();
+
         if (reLoadLevel) {
-            main.generatorLevel.createNewLevel = reLoadLevel;
+            main.generatorLevel.createNewLevel = !main.isDead;
             main.generatorLevel.deleteLevel();
 
         }
+        console.log(main.level,main.nbrJetonToGenerate)
         main.generatorLevel.generateLevel();
     });
 }

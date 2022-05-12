@@ -1,7 +1,5 @@
 import Affichage from "./Affichage.js";
 import Particles from "./Particles.js";
-import Camera from "./Camera.js";
-import GeneratorLevel from "./GeneratorLevel.js";
 
 
 export default class Main {
@@ -14,7 +12,7 @@ export default class Main {
     jump = true;
     impulseDown = false;
     level = 0;
-    nbrLevel = 11;
+    nbrLevel = 12;
     move = false;
     faille;
     affichage;
@@ -25,6 +23,7 @@ export default class Main {
     pique = false;
     camera;
     turn = true;
+    isDead=false;
 
 
     constructor(scene, ground, respawnPoint) {
@@ -35,7 +34,6 @@ export default class Main {
         this.allJeton = 5; // nombre de jetons crée au total dans le niveau
         this.respawn = respawnPoint;
         this.printer = new Affichage(this);
-        this.generatorCamera = new Camera(this);
         this.music = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {
             loop: true,
             autoplay: true
@@ -183,7 +181,7 @@ export default class Main {
                 this.ground.position.z = boule.position.z;
                 this.light.position.x = boule.position.x - 20;
                 this.light.position.z = boule.position.z;
-                if (this.level % this.nbrLevel === 8) this.light.position.y = boule.position.y + 70;
+                if (this.level % this.nbrLevel === 9) this.light.position.y = boule.position.y + 70;
             }
 
         };
@@ -215,7 +213,12 @@ export default class Main {
                 this.inputStates.p = true;
             } else if (event.keyCode === 13) {
                 if(this.turn){
-                    if(this.skip)this.skip.dispose();
+                    if(this.skip){
+                        console.log("ca passe ",this.skip)
+                        this.skip.dispose();
+                        //this.skip=undefined;
+                        console.log("ca passe ",this.skip);
+                    }
                     this.turn=false;
                     this.canMove=true;
                     this.resetCamera();
@@ -280,7 +283,7 @@ export default class Main {
 
                     }
                     if (this.affichage) this.affichage.dispose();
-                    if ((this.level % this.nbrLevel) !== 10 || (this.level % this.nbrLevel) !== 9) this.printer.printNumberOfJeton();
+                    if ((this.level % this.nbrLevel) !== 11 || (this.level % this.nbrLevel) !== 10) this.printer.printNumberOfJeton();
 
                 }
             ));
@@ -324,18 +327,17 @@ export default class Main {
             this.resetCamera();
             this.hasNeverTurn = false;
             this.pique = false;
-            this.boule.position = new BABYLON.Vector3(this.respawn.x, this.respawn.y, this.respawn.z);
-            this.boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
-            this.boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
+            this.resetBoulePosition()
             this.life[this.nbrLife].dispose();
-            this.nbrLife -= 1;
+            if (this.generatorLevel.generatorMenu.winOrLoose===false)this.nbrLife -= 1;
             if (this.nbrLife === 0) {
                 var gameover = new BABYLON.Sound("gameover", "sounds/game_over.wav", this.scene, null, {
                     loop: false,
                     autoplay: true
                 });
-                this.resetGame();
-                return true;
+                this.isDead=true;
+                this.winOrLoose(false);
+                return false;
             }
             var looseLife = new BABYLON.Sound("looseLife", "sounds/looseLife.wav", this.scene, null, {
                 loop: false,
@@ -345,21 +347,20 @@ export default class Main {
                 loop: true,
                 autoplay: true
             });
-
-            if (this.floorisLava || this.level % this.nbrLevel === 10) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
+            if (this.generatorLevel.generatorMenu.winOrLoose===false)this.generatorLevel.generatorMenu.menuMain(this.level % this.nbrLevel);
+            if (this.floorisLava || this.level % this.nbrLevel === 11) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
                 if (this.affichage) this.affichage.dispose();
-                //this.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
                 return true;
             }
-            if (this.level % this.nbrLevel === 3) {
+            if (this.level % this.nbrLevel === 4) {
                 this.scene.getPhysicsEngine().setGravity(new BABYLON.Vector3(this.scene.getPhysicsEngine().gravity.x, -80, this.scene.getPhysicsEngine().gravity.z));
                 return false;
             }
-            if (this.level % this.nbrLevel === 8) {
+            if (this.level % this.nbrLevel === 9) {
                 this.generatorLevel.ascenseur.position.y = this.respawn.y - 5;
                 this.generatorLevel.ascenseur.monte = false;
             }
-            this.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
+
 
         }
         if (this.access) {
@@ -369,12 +370,17 @@ export default class Main {
 
     }
 
+    resetBoulePosition(){
+        this.boule.position = new BABYLON.Vector3(this.respawn.x, this.respawn.y, this.respawn.z);
+        this.boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
+        this.boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
+    }
+
     resetGame() {
         this.music.stop();
-        this.level = 0;
         this.nbrLife = 3;
         this.hasNeverTurn = true;
-        delete this.key;
+        if (this.key) delete this.key;
         this.access = true;
         if (this.boule.key) this.boule.key = false;
         if (this.affichage) this.affichage.dispose();
@@ -395,10 +401,21 @@ export default class Main {
     }
 
     setLevel(i){
+        //this.generatorLevel.deleteLevel();
+        //this.resetBoulePosition();
         this.level=i;
         this.generatorLevel.createNewLevel=true;
         this.turn=true;
 
+
+    }
+    winOrLoose(win){
+        console.log("Je suis la ")
+        let title = win===true ? "You Win" : "You Loose";
+        this.generatorLevel.generatorMenu.menuMain(undefined, undefined, false, title,true);
+        //this.nbrJetonToGenerate=5;
+        this.setLevel(0);
+        this.resetGame();
     }
 
 

@@ -24,107 +24,110 @@ export default class GeneratorLevel {
 
     generateLevel() {
         if (this.main.nbrJetonToGenerate === 0) {
-            this.main.hasNeverTurn=true;
-            this.deleteLevel();
+            this.main.hasNeverTurn = true;
+            if (this.main.level % this.main.nbrLevel !== 11) this.deleteLevel();
+            else this.generatorMenu.winOrLoose=true;
             this.main.level += 1;
             this.createNewLevel = true;
-            this.main.turn=true;
+            this.main.turn = true;
         }
         switch (this.main.level % this.main.nbrLevel) {
-            case -1: {
+            case 0: {
                 if (this.createNewLevel) {
-                    this.main.canMove = false;
-                    this.generatorMenu.menuMain();
+                    if(this.main.isDead===false) {
+                        if (this.generatorMenu.winOrLoose) this.main.winOrLoose(true);
+                        else this.generatorMenu.menuMain();
+                    }
                     this.createNewLevel = false;
                 }
                 break;
             }
-            case 0: {
-                if (this.createNewLevel){
-                    this.main.radius = 200;
-                    this.main.middle = 0;
-                    this.createLevel0();
-                    this.initialisation();
-                }
-                if(this.main.turn)this.main.cameraToMove.turn()
-                break;
-            }
             case 1: {
                 if (this.createNewLevel) {
-                    this.main.radius = 300;
-                    this.main.middle = 110;
+                    this.main.radius = 200;
+                    this.main.middle = 0;
                     this.createLevel1();
-                    this.initialisation()
+                    this.initialisation();
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if (this.main.turn) this.main.cameraToMove.turn()
                 break;
             }
             case 2: {
                 if (this.createNewLevel) {
-                    this.main.radius = 400;
-                    this.main.middle = 165;
+                    this.main.radius = 300;
+                    this.main.middle = 110;
                     this.createLevel2();
-                    this.initialisation();
+                    this.initialisation()
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if (this.main.turn) this.main.cameraToMove.turn()
                 break;
-
             }
             case 3: {
                 if (this.createNewLevel) {
-                    this.main.radius = 300;
-                    this.main.middle = 65;
+                    this.main.radius = 400;
+                    this.main.middle = 165;
                     this.createLevel3();
-                    this.initialisation()
+                    this.initialisation();
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
-                this.changeGravity.move();
+                if (this.main.turn) this.main.cameraToMove.turn()
                 break;
+
             }
             case 4: {
                 if (this.createNewLevel) {
-                    this.main.radius = 500;
-                    this.main.middle = 245;
+                    this.main.radius = 300;
+                    this.main.middle = 65;
                     this.createLevel4();
-                    this.initialisation();
+                    this.initialisation()
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
-                this.main.key.rotate(BABYLON.Axis.Z, 0.02);
+                if (this.main.turn) this.main.cameraToMove.turn()
+                this.changeGravity.move();
                 break;
             }
             case 5: {
                 if (this.createNewLevel) {
-                    this.main.radius = 300;
-                    this.main.middle = 122;
+                    this.main.radius = 500;
+                    this.main.middle = 245;
                     this.createLevel5();
                     this.initialisation();
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if (this.main.turn) this.main.cameraToMove.turn()
+                this.main.key.rotate(BABYLON.Axis.Z, 0.02);
                 break;
             }
             case 6: {
                 if (this.createNewLevel) {
+                    this.main.radius = 300;
+                    this.main.middle = 122;
+                    this.createLevel6();
+                    this.initialisation();
+                }
+                if (this.main.turn) this.main.cameraToMove.turn()
+                break;
+            }
+            case 7: {
+                if (this.createNewLevel) {
                     this.main.floorisLava = false;
                     this.main.radius = 300;
                     this.main.middle = 145;
-                    this.createLevel6();
+                    this.createLevel7();
                     this.initialisation();
 
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if (this.main.turn) this.main.cameraToMove.turn()
                 for (let i = 0; i < this.poutres.length; i++) {
                     this.poutres[i].rotate(BABYLON.Axis.Y, 0.02);
                 }
                 break;
             }
-            case 7: {
+            case 8: {
                 if (this.createNewLevel) {
                     this.main.radius = 300;
                     this.main.middle = 115;
-                    this.createLevel7();
+                    this.createLevel8();
                     this.initialisation()
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if (this.main.turn) this.main.cameraToMove.turn()
                 for (let i = 0; i < this.pique.length; i++) {
                     if (i === 0) {
                         this.pique[i].move("y");
@@ -135,36 +138,36 @@ export default class GeneratorLevel {
                 this.manche.move();
                 break;
             }
-            case 8: {
+            case 9: {
                 if (this.createNewLevel) {
                     this.main.radius = 500;
                     this.main.middle = 200;
-                    this.createLevel8();
-                    this.initialisation();
-                }
-                if(this.main.turn)this.main.cameraToMove.turn()
-                this.ascenseur.move();
-                break;
-            }
-            case 9: {
-                if (this.createNewLevel) {
-                    this.main.radius = 150;
-                    this.main.middle = 50;
                     this.createLevel9();
                     this.initialisation();
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
-                if(this.genie.boule.position.x-this.main.boule.position.x<20 && !this.genie.panneau)this.genie.createPanneauForGenie();
+                if (this.main.turn) this.main.cameraToMove.turn()
+                this.ascenseur.move();
                 break;
             }
             case 10: {
                 if (this.createNewLevel) {
-                    this.main.radius = 200;
-                    this.main.middle = 0;
+                    this.main.radius = 150;
+                    this.main.middle = 50;
                     this.createLevel10();
                     this.initialisation();
                 }
-                if(this.main.turn)this.main.cameraToMove.turn()
+                if (this.main.turn) this.main.cameraToMove.turn()
+                if (this.genie.boule.position.x - this.main.boule.position.x < 20 && !this.genie.panneau) this.genie.createPanneauForGenie();
+                break;
+            }
+            case 11: {
+                if (this.createNewLevel) {
+                    this.main.radius = 200;
+                    this.main.middle = 0;
+                    this.createLevel11();
+                    this.initialisation();
+                }
+                if (this.main.turn) this.main.cameraToMove.turn()
                 this.obstacle.boss.attaque(this.main.boule, this.obstacle.bossBoule);
                 break;
             }
@@ -173,33 +176,34 @@ export default class GeneratorLevel {
     }
 
     initialisation() {
-        this.generatorMenu.menuMain((this.main.level % this.main.nbrLevel) + 1)
+        this.main.isDead=false;
+        this.generatorMenu.menuMain(this.main.level % this.main.nbrLevel)
         this.main.collision();
         this.createNewLevel = false;
         if (this.main.affichage) this.main.affichage.dispose();
-        if ((this.main.level % this.main.nbrLevel) !== 10 || (this.main.level % this.main.nbrLevel) !== 9) this.printer.printNumberOfJeton();
+        if ((this.main.level % this.main.nbrLevel) !== 11 || (this.main.level % this.main.nbrLevel) !== 10) this.printer.printNumberOfJeton();
         this.access = true;
-        if (this.main.hasNeverTurn){
+        if (this.main.hasNeverTurn) {
             this.main.createMoveCamera(this.main.middle);
-            this.scene.activeCamera= this.main.cameraToMove;
+            this.scene.activeCamera = this.main.cameraToMove;
         }
 
-        this.main.canMove=false;
+        this.main.canMove = false;
     }
 
-    createLevel0() {
+    createLevel1() {
         this.main.allJeton = 5;
         this.obstacle.createStep(100, 100, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.generatorToken.generateJetons((this.main.respawn.x + 99), (this.main.respawn.x + 49), (this.main.respawn.z + 99), (this.main.respawn.z + 49));
     }
 
-    createLevel1() {
+    createLevel2() {
         this.main.allJeton = 5;
         this.obstacle.createStep(20, 20, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.obstacle.createStep(17, 17, this.main.respawn.x + 30, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.obstacle.createStep(15, 15, this.main.respawn.x + 60, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.obstacle.createStep(12, 12, this.main.respawn.x + 90, this.main.respawn.y - 5, this.main.respawn.z, true)
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 165, this.main.respawn.y - 5, this.main.respawn.z, true,"images/corridor.jpg");
+        this.obstacle.createStep(100, 5, this.main.respawn.x + 165, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor.jpg");
         this.obstacle.createStep(10, 10, this.main.respawn.x + 240, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 30, this.main.respawn.y - 2, this.main.respawn.z);
         this.nbrJeton -= 1;
@@ -216,38 +220,38 @@ export default class GeneratorLevel {
     }
 
 
-    createLevel2() {
+    createLevel3() {
         this.main.allJeton = 5;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
 
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 75, this.main.respawn.y - 5, this.main.respawn.z, true,"images/corridor.jpg");
+        this.obstacle.createStep(100, 5, this.main.respawn.x + 75, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor.jpg");
 
-        let stepD = this.obstacle.createStep(23, 7, this.main.respawn.x + 128.5, this.main.respawn.y - 5, this.main.respawn.z - 9, true,"images/corridor.jpg");
+        let stepD = this.obstacle.createStep(23, 7, this.main.respawn.x + 128.5, this.main.respawn.y - 5, this.main.respawn.z - 9, true, "images/corridor.jpg");
         stepD.rotate(BABYLON.Axis.Y, 1.57);
 
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 128.5, this.main.respawn.y - 2, this.main.respawn.z);
         this.nbrJeton -= 1;
 
-        this.obstacle.createStep(93.5, 5, this.main.respawn.x + 178.8, this.main.respawn.y - 5, this.main.respawn.z - 18, true,"images/corridor.jpg");
+        this.obstacle.createStep(93.5, 5, this.main.respawn.x + 178.8, this.main.respawn.y - 5, this.main.respawn.z - 18, true, "images/corridor.jpg");
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 225, this.main.respawn.y - 2, this.main.respawn.z - 17);
         this.nbrJeton -= 1;
 
-        let stepG = this.obstacle.createStep(200, 5, this.main.respawn.x + 228, this.main.respawn.y - 5, this.main.respawn.z - 10, true,"images/corridor.jpg");
+        let stepG = this.obstacle.createStep(200, 5, this.main.respawn.x + 228, this.main.respawn.y - 5, this.main.respawn.z - 10, true, "images/corridor.jpg");
         stepG.rotate(BABYLON.Axis.Y, 1.57);
         this.generatorToken.createLife(this.main.respawn.x + 228, this.main.respawn.y, this.main.respawn.z - 109)
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 235, this.main.respawn.y - 5.1, this.main.respawn.z - 50, true,"images/corridor.jpg");
+        this.obstacle.createStep(100, 5, this.main.respawn.x + 235, this.main.respawn.y - 5.1, this.main.respawn.z - 50, true, "images/corridor.jpg");
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 284, this.main.respawn.y - 2, this.main.respawn.z - 50);
         this.nbrJeton -= 1;
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 186, this.main.respawn.y - 2, this.main.respawn.z - 50);
         this.nbrJeton -= 1;
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 280, this.main.respawn.y - 5.1, this.main.respawn.z + 87.5, true,"images/corridor.jpg");
+        this.obstacle.createStep(100, 5, this.main.respawn.x + 280, this.main.respawn.y - 5.1, this.main.respawn.z + 87.5, true, "images/corridor.jpg");
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 330, this.main.respawn.y - 2, this.main.respawn.z + 87.5);
         this.nbrJeton -= 1;
 
 
     }
 
-    createLevel3() {
+    createLevel4() {
         this.main.allJeton = 5;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.changeGravity = this.obstacle.inverseGravity(this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z);
@@ -262,7 +266,7 @@ export default class GeneratorLevel {
 
     }
 
-    createLevel4() {
+    createLevel5() {
         this.main.allJeton = 4;
         this.main.nbrJetonToGenerate = 4;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true)
@@ -275,15 +279,15 @@ export default class GeneratorLevel {
 
 
         this.obstacle.poutre(140, 0);
-        this.obstacle.createStep(100, 5, 320, 10, -10, true,"images/corridor.jpg");
-        this.obstacle.createStep(100, 100, 435, 10, 0,true);
+        this.obstacle.createStep(100, 5, 320, 10, -10, true, "images/corridor.jpg");
+        this.obstacle.createStep(100, 100, 435, 10, 0, true);
         this.obstacle.coffreFort(469, 12, 20);
         this.obstacle.createKey(277, 8, 10);
 
     }
 
 
-    createLevel5() {
+    createLevel6() {
         this.main.allJeton = 1;
         this.main.nbrJetonToGenerate = 1;
         this.obstacle.floorIsLava(this.main.respawn.x + 10, 0, 0);
@@ -292,7 +296,7 @@ export default class GeneratorLevel {
         this.obstacle.createStep(100, 100, 195, 30, 0, true);
     }
 
-    createLevel6() {
+    createLevel7() {
         this.main.allJeton = 5;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.poutres = this.obstacle.createRondin(60, -20, 0);
@@ -312,7 +316,7 @@ export default class GeneratorLevel {
         }
     }
 
-    createLevel7() {
+    createLevel8() {
         this.main.allJeton = 4;
         this.main.nbrJetonToGenerate = 4;
         var sens;
@@ -344,7 +348,7 @@ export default class GeneratorLevel {
 
     }
 
-    createLevel8() {
+    createLevel9() {
         this.main.allJeton = 5;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
 
@@ -366,7 +370,7 @@ export default class GeneratorLevel {
 
     }
 
-    createLevel9() {
+    createLevel10() {
         this.main.allJeton = 5;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.genie = new Genie(this.main);
@@ -375,7 +379,7 @@ export default class GeneratorLevel {
         step1.rotate(BABYLON.Axis.Y, this.rotation);
     }
 
-    createLevel10() {
+    createLevel11() {
         this.obstacle.duelFinal();
         this.obstacle.boss.detectWin();
     }
@@ -402,7 +406,7 @@ export default class GeneratorLevel {
         this.obstacle.nbrJeton = 5;
         this.main.boule.key = false;
         this.main.boule.position = new BABYLON.Vector3(this.main.respawn.x, this.main.respawn.y, this.main.respawn.z)
-        if (this.main.level % this.main.nbrLevel === 3 || this.obstacle.light) {
+        if (this.main.level % this.main.nbrLevel === 4 || this.obstacle.light) {
             this.scene.getPhysicsEngine().setGravity(new BABYLON.Vector3(this.scene.getPhysicsEngine().gravity.x, -80, this.scene.getPhysicsEngine().gravity.z));
             this.main.camera.beta = 3.14 / 3;
             this.obstacle.groundPlafond.dispose();
