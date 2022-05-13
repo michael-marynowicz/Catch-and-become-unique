@@ -3,9 +3,8 @@ export default class Menu{
 
 
 
-    constructor(main,obstacle) {
+    constructor(main) {
         this.main = main;
-        this.obstacle=obstacle;
         this.main.canMove=true;
         this.hud = []
     }
@@ -219,7 +218,7 @@ export default class Menu{
         rectangle.width = "45%";
         rectangle.height = "50%";
         rectangle.alpha = 0.8;
-        this.rectangle = rectangle
+        this.rectangle = rectangle;
         myText.text = i ? "Level "+i : title;
         myText.outlineColor = "black";
         myText.outlineWidth = 4;
@@ -321,6 +320,7 @@ export default class Menu{
             let menu = this;
             this.hud.push(this.levels[i]);
             this.levels[i].onPointerUpObservable.add(function() {
+                menu.hud.push(menu.rectangle);
                 menu.clearHud();
                 menu.rectangle.dispose();
                 if(menu.welcome)obj.initialisation();

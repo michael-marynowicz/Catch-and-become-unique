@@ -214,10 +214,7 @@ export default class Main {
             } else if (event.keyCode === 13) {
                 if(this.turn){
                     if(this.skip){
-                        console.log("ca passe ",this.skip)
                         this.skip.dispose();
-                        //this.skip=undefined;
-                        console.log("ca passe ",this.skip);
                     }
                     this.turn=false;
                     this.canMove=true;
@@ -347,7 +344,9 @@ export default class Main {
                 loop: true,
                 autoplay: true
             });
-            if (this.generatorLevel.generatorMenu.winOrLoose===false)this.generatorLevel.generatorMenu.menuMain(this.level % this.nbrLevel);
+            if (this.generatorLevel.generatorMenu.winOrLoose===false){
+                this.generatorLevel.generatorMenu.menuMain(this.level % this.nbrLevel);
+            }
             if (this.floorisLava || this.level % this.nbrLevel === 11) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
                 if (this.affichage) this.affichage.dispose();
                 return true;
@@ -377,7 +376,7 @@ export default class Main {
     }
 
     resetGame() {
-        this.music.stop();
+        //this.music.stop();
         this.nbrLife = 3;
         this.hasNeverTurn = true;
         if (this.key) delete this.key;
@@ -401,8 +400,6 @@ export default class Main {
     }
 
     setLevel(i){
-        //this.generatorLevel.deleteLevel();
-        //this.resetBoulePosition();
         this.level=i;
         this.generatorLevel.createNewLevel=true;
         this.turn=true;
@@ -410,10 +407,8 @@ export default class Main {
 
     }
     winOrLoose(win){
-        console.log("Je suis la ")
         let title = win===true ? "You Win" : "You Loose";
         this.generatorLevel.generatorMenu.menuMain(undefined, undefined, false, title,true);
-        //this.nbrJetonToGenerate=5;
         this.setLevel(0);
         this.resetGame();
     }

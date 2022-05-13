@@ -18,7 +18,7 @@ export default class GeneratorLevel {
         this.nbrJeton = main.nbrJeton;
         this.printer = new Affichage(main);
         this.generatorToken = new GeneratorToken(main);
-        this.generatorMenu = new Menu(this.main, this.obstacle);
+        this.generatorMenu = new Menu(this.main);
     }
 
 
@@ -176,8 +176,8 @@ export default class GeneratorLevel {
     }
 
     initialisation() {
+        if(this.main.hasNeverTurn===true)this.generatorMenu.menuMain(this.main.level % this.main.nbrLevel)
         this.main.isDead=false;
-        this.generatorMenu.menuMain(this.main.level % this.main.nbrLevel)
         this.main.collision();
         this.createNewLevel = false;
         if (this.main.affichage) this.main.affichage.dispose();
