@@ -1,3 +1,4 @@
+import StoryFactory from "./StoryFactory.js"
 export default class Menu{
 
 
@@ -109,7 +110,7 @@ export default class Menu{
         button1.onPointerUpObservable.add(function() {
             myText.dispose();
             main.clearHud();
-            main.genAllLevel(myText);
+            main.genAllLevel();
             main.buttonReturn(myText,10)
         });
 
@@ -118,14 +119,11 @@ export default class Menu{
 
     genTextStory(advancedTexture,text){
         let myText =  new BABYLON.GUI.TextBlock();
-        myText.text = "Lorem ipsum dolor sit amet\n" +
-            "Lorem ipsum dolor sit amet\n" +
-            "Lorem ipsum dolor sit amet\n" +
-            "Lorem ipsum dolor sit amet\n";
+        myText.text = StoryFactory(this.level= this.level===undefined ? 0 : this.level)
         myText.outlineColor = "black";
         myText.outlineWidth = 4;
         myText.fontSize = "3%";
-        myText.top = "-10%";
+        myText.top = "-5%";
         myText.color = "white";
         myText.fontWeight = "bold";
         this.hud.push(myText);
@@ -203,8 +201,9 @@ export default class Menu{
         this.winOrLoose=winOrLoose
         this.helper = helper
         this.main.canMove = false;
+        this.level=i;
         if(this.main.turn)this.main.turn=false;
-        this.welcome = (i === undefined) && (title=== "Catch and Become Unique");
+        this.welcome = (this.level === undefined) && (title=== "Catch and Become Unique");
         // GUI
         let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         let myText =  new BABYLON.GUI.TextBlock();
@@ -301,7 +300,7 @@ export default class Menu{
         advancedTexture.addControl(button1);
     }
 
-    genAllLevel(text){
+    genAllLevel(){
         let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         this.levels=[]
         let acc=-20;
