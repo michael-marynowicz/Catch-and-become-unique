@@ -39,20 +39,23 @@ export default class Boss {
     }
 
     detectWin() {
-        if (!this.boule.actionManager) this.boule.actionManager = new BABYLON.ActionManager(this.scene);
-        this.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        if (!this.main.ground.actionManager) this.main.ground.actionManager = new BABYLON.ActionManager(this.scene);
+        this.main.ground.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
             {
                 trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                parameter: this.main.ground
+                parameter: this.boule
             },
             () => {
                 this.main.generatorLevel.generatorMenu.winOrLoose = true;
-                this.main.setLevel(0);
-                this.main.resetBoulePosition();
-                var win = new BABYLON.Sound("win", "sounds/win.wav", this.scene, null, {
-                    loop: false,
-                    autoplay: true
-                });
+                if(this.main.isDead===false && !this.win){
+                    this.main.setLevel(0);
+                    this.main.resetBoulePosition();
+                    var win = new BABYLON.Sound("win", "sounds/win.wav", this.scene, null, {
+                        loop: false,
+                        autoplay: true
+                    });
+                }
+                this.win = true;
 
 
             }));

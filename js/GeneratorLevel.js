@@ -321,15 +321,15 @@ export default class GeneratorLevel {
         this.main.nbrJetonToGenerate = 4;
         var sens;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
-        let step1 = this.obstacle.createStep(7, 30, this.main.respawn.x + 30, this.main.respawn.y - 5, this.main.respawn.z, false);
-        let step2 = this.obstacle.createStep(7, 30, this.main.respawn.x + 85, this.main.respawn.y - 5, this.main.respawn.z, false);
+        let step1 = this.obstacle.createStep(7, 30, this.main.respawn.x + 30, this.main.respawn.y - 5, this.main.respawn.z, true);
+        let step2 = this.obstacle.createStep(7, 30, this.main.respawn.x + 85, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.pique = [];
         for (let i = 0; i < 3; i++) {
             var acc = i < 2 ? 10 : -10;
             this.pique[i] = i === 0 ? this.obstacle.createPique(60, this.main.respawn.y - 5, this.main.respawn.z) : this.obstacle.createPique(110, this.main.respawn.y, this.main.respawn.z + acc, sens = i !== 2);
             if (i > 0) this.pique[i].rotate(BABYLON.Axis.X, this.rotation = i === 1 ? -1.57 : 1.57);
         }
-        let step3 = this.obstacle.createStep(7, 130, this.main.respawn.x + 180, this.main.respawn.y - 5, this.main.respawn.z, false);
+        let step3 = this.obstacle.createStep(7, 130, this.main.respawn.x + 180, this.main.respawn.y - 5, this.main.respawn.z, true,"images/corridor.jpg");
 
         this.manche = this.obstacle.createBoulet(this.main.respawn.x + 180, this.main.respawn.y + 20, this.main.respawn.z);
 

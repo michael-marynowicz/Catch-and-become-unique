@@ -34,7 +34,7 @@ export default class Main {
         this.allJeton = 5; // nombre de jetons crée au total dans le niveau
         this.respawn = respawnPoint;
         this.printer = new Affichage(this);
-        this.music = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {
+        this.music_fond = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {
             loop: true,
             autoplay: true
         });
@@ -333,6 +333,7 @@ export default class Main {
                     autoplay: true
                 });
                 this.isDead=true;
+                this.music_oneLife.stop();
                 this.winOrLoose(false);
                 return false;
             }
@@ -340,7 +341,7 @@ export default class Main {
                 loop: false,
                 autoplay: true
             });
-            if (this.nbrLife === 1) this.music = new BABYLON.Sound("heartbeat", "sounds/heartbeat.wav", this.scene, null, {
+            if (this.nbrLife === 1) this.music_oneLife = new BABYLON.Sound("heartbeat", "sounds/heartbeat.wav", this.scene, null, {
                 loop: true,
                 autoplay: true
             });
@@ -408,7 +409,8 @@ export default class Main {
     }
     winOrLoose(win){
         let title = win===true ? "You Win" : "You Loose";
-        this.generatorLevel.generatorMenu.menuMain(undefined, undefined, false, title,true);
+        let img = win === true ? "images/win.jpg" : "images/loose.jpeg";
+        this.generatorLevel.generatorMenu.menuMain(undefined, img, false, title,true);
         this.setLevel(0);
         this.resetGame();
     }
