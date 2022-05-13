@@ -42,7 +42,6 @@ function startGame() {
             main.generatorLevel.deleteLevel();
 
         }
-        console.log(main.level,main.nbrJetonToGenerate)
         main.generatorLevel.generateLevel();
     });
 }

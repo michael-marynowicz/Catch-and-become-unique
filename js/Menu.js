@@ -30,7 +30,8 @@ export default class Menu{
 
 
     genButtonStart(advancedTexture){
-        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "START GAME");
+        let text = this.winOrLoose===true ? "RESTART" : "START GAME";
+        let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", text);
         button1.fontSize = "4%";
         button1.top = "-6%";
         button1.width = "20%";
@@ -201,7 +202,8 @@ export default class Menu{
         this.winOrLoose=winOrLoose
         this.helper = helper
         this.main.canMove = false;
-        this.level=i;
+        if(this.winOrLoose===true)this.level = title==="You Win" ? 100 : -100;
+        else this.level=i;
         if(this.main.turn)this.main.turn=false;
         this.welcome = (this.level === undefined) && (title=== "Catch and Become Unique");
         // GUI
