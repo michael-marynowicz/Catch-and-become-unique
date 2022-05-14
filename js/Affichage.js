@@ -1,6 +1,6 @@
-export default class Affichage{
+export default class Affichage {
     constructor(main) {
-        this.main=main
+        this.main = main
     }
 
     printNumberOfJeton() {
@@ -8,32 +8,32 @@ export default class Affichage{
         text1.text = `${this.main.allJeton - this.main.nbrJetonToGenerate}/${this.main.allJeton} token`;
         text1.color = "white";
         text1.fontSize = 26;
-        text1.top = -320;
-        text1.left = 600;
+        text1.top = "-45%";
+        text1.left = "45%";
         this.main.affichage = text1;
         this.main.scene.advancedTexture.addControl(text1);
     }
 
     printLife() {
-        var acc=0;
-        if(this.main.life.length>0) {
+        var acc = 0;
+        if (this.main.life.length > 0) {
             this.advancedTexture.dispose();
             for (let i = 1; i < this.main.nbrLife; i++) {
                 this.main.life[i].dispose();
             }
         }
 
-        for (let i = 1; i < this.main.nbrLife+1; i++) {
-            var image = new BABYLON.GUI.Image("but_"+i, "images/ball_earth.jpg");
+        for (let i = 1; i < this.main.nbrLife + 1; i++) {
+            var image = new BABYLON.GUI.Image("but_" + i, "images/ball_earth.jpg");
             image.height = "50px";
             image.width = "50px";
-            image.top = 5;
+            image.top = "9%";
             image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
             image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-            image.left = `${acc+3} px`;
+            image.left = `${acc + 3} px`;
             this.main.life[i] = image;
             //this.main.scene.advancedTexture.addControl(image);
-            acc = 50*i;
+            acc = 50 * i;
         }
 
 
@@ -44,10 +44,10 @@ export default class Affichage{
         rect1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
         rect1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
         rect1.height = "55px";
-        rect1.width=`${acc+10}px`;
-        rect1.left = "5px";
+        rect1.width = `${acc + 10}px`;
+        rect1.left = "0.3%";
         rect1.cornerRadius = 20;
-        rect1.top = -320;
+        rect1.top = "-45%";
         rect1.color = "blue";
         rect1.thickness = 1;
         rect1.background = "grey";
@@ -55,10 +55,7 @@ export default class Affichage{
             rect1.addControl(this.main.life[i])
         }
         advancedTexture.addControl(rect1);
-        this.advancedTexture=advancedTexture;
-
-
-
+        this.advancedTexture = advancedTexture;
 
 
     }

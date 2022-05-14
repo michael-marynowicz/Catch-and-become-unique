@@ -1,11 +1,11 @@
-export default class Genie{
+export default class Genie {
 
     constructor(main) {
-        this.main=main;
+        this.main = main;
         this.scene = main.scene;
     }
 
-    createGenie(x,y,z){
+    createGenie(x, y, z) {
         let boule = new BABYLON.MeshBuilder.CreateSphere("life", {diameter: 4}, this.scene);
 
         var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(boule);
@@ -16,12 +16,15 @@ export default class Genie{
         boule.material.specularColor = new BABYLON.Color3(0.5, 0, 0.5);
         var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "");
         var obj = this;
+        var main = this.main
         button1.onPointerUpObservable.add(function () {
-            obj.createPanneauForGenie();
+            if (main.canMove === true) {
+                obj.createPanneauForGenie();
+            }
         });
         advancedTexture.addControl(button1);
         let torus = BABYLON.MeshBuilder.CreateTorus("torus", {thickness: 0.25, diameter: 3});
-        torus.position = new BABYLON.Vector3(x, y+2, z);
+        torus.position = new BABYLON.Vector3(x, y + 2, z);
         torus.material = new BABYLON.StandardMaterial("genie-material", this.scene);
         torus.material.emissiveColor = new BABYLON.Color3.Blue();
         torus.material.specularColor = new BABYLON.Color3(0.5, 0, 0.5);
@@ -29,11 +32,11 @@ export default class Genie{
         this.main.allObstacles[this.main.ind++] = boule;
         this.main.allObstacles[this.main.ind++] = torus;
         this.boule = boule;
-        this.main.boss=boule;
+        this.main.boss = boule;
     }
 
-    createPanneauForGenie(){
-        this.panneau=true;
+    createPanneauForGenie() {
+        this.panneau = true;
         var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         this.main.nbrJetonToGenerate = 5;
         var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Life");
@@ -56,17 +59,19 @@ export default class Genie{
         var obj = this.main
 
 
-        button1.onPointerUpObservable.add(function() {
+        button1.onPointerUpObservable.add(function () {
             obj.nbrJetonToGenerate = 0;
-            obj.nbrLife+=1;
+            obj.nbrLife += 1;
             obj.printer.printLife();
 
             advancedTexture.dispose();
+
         });
-        button2.onPointerUpObservable.add(function() {
+        button2.onPointerUpObservable.add(function () {
             obj.nbrJetonToGenerate = 0;
-            obj.boule.speed+=2;
+            obj.boule.speed += 2;
             advancedTexture.dispose();
+
         });
         advancedTexture.addControl(button1);
         advancedTexture.addControl(button2);
