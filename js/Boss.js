@@ -48,6 +48,7 @@ export default class Boss {
             () => {
                 this.main.generatorLevel.generatorMenu.winOrLoose = true;
                 if(this.main.isDead===false && !this.win){
+                    if(this.main.music_oneLife)this.main.music_oneLife.stop();
                     this.main.setLevel(0);
                     this.main.resetBoulePosition();
                     var win = new BABYLON.Sound("win", "sounds/win.wav", this.scene, null, {

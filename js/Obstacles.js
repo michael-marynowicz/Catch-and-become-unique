@@ -97,7 +97,7 @@ export default class Obstacles {
 
         poutre.position = new BABYLON.Vector3(x + 53, 14, z);
         poutre.material = new BABYLON.StandardMaterial("buche", this.scene);
-        poutre.material.diffuseTexture = new BABYLON.Texture("images/buche.jpg");
+        poutre.material.diffuseTexture = new BABYLON.Texture("images/poutre2.jpg");
         poutre.rotate(BABYLON.Axis.Z, 1.57);
         poutre.checkCollisions = true;
 
@@ -293,7 +293,9 @@ export default class Obstacles {
         button1.fontSize = "20%";
         button1.background = "green";
         var obj = this;
+        var main = this.main;
         button1.onPointerUpObservable.add(function () {
+            main.generatorLevel.generatorMenu.soundClic();
             obj.panneau(messageOnClick);
         });
         advancedTexture.addControl(button1);
@@ -303,7 +305,6 @@ export default class Obstacles {
 
     panneau(message) {
         this.main.canMove = false;
-        //var advancedTextureText = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         this.main.nbrJetonToGenerate = 5;
         var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", message);
@@ -317,12 +318,11 @@ export default class Obstacles {
         var obj = this.main
 
         button1.onPointerUpObservable.add(function () {
-            //advancedTextureText.dispose();
+            obj.generatorLevel.generatorMenu.soundClic();
             obj.canMove = true;
             advancedTexture.dispose();
         });
         advancedTexture.addControl(button1);
-        //advancedTextureText.addControl(myText);
 
     }
 

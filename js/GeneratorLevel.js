@@ -168,6 +168,10 @@ export default class GeneratorLevel {
                     this.initialisation();
                 }
                 if (this.main.turn) this.main.cameraToMove.turn()
+                else if(this.main.hasNeverTurn===false && !this.fight) {
+                    this.fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.scene, null, {loop: false, autoplay: true});
+                    this.printer.printFight();
+                }
                 this.obstacle.boss.attaque(this.main.boule, this.obstacle.bossBoule);
                 break;
             }
@@ -187,7 +191,6 @@ export default class GeneratorLevel {
             this.main.createMoveCamera(this.main.middle);
             this.scene.activeCamera = this.main.cameraToMove;
         }
-
         this.main.canMove = false;
     }
 

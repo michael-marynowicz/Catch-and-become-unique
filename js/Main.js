@@ -47,7 +47,7 @@ export default class Main {
         camera.beta = 3.14 / 3;
         camera.move = () => {
             camera.alpha += 0.02;
-            if(this.lightForMove)this.lightForMove.position=camera.position;
+            if(this.lightForMove) this.lightForMove.position=camera.position;
         }
         return camera;
     }
@@ -73,10 +73,14 @@ export default class Main {
             this.scene.activeCamera = this.camera;
             this.turn = false;
             this.canMove = true;
+            this.hasNeverTurn=false;
             this.lightForMove.dispose();
             this.cameraToMove.dispose();
             this.cameraToMove = undefined;
             this.skip.dispose();
+            if ((this.level % this.nbrLevel) === 11) {
+                var fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.scene, null, {loop: false, autoplay: true});
+            }
             return true;
         }
     }
@@ -217,6 +221,7 @@ export default class Main {
                         this.skip.dispose();
                     }
                     this.turn=false;
+                    this.hasNeverTurn=false;
                     this.canMove=true;
                     this.resetCamera();
                 }

@@ -43,12 +43,17 @@ export default class Menu {
         let menu = this;
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function () {
+            menu.soundClic();
             obj.nbrJetonToGenerate = (menu.welcome || menu.winOrLoose) ? 0 : obj.nbrJetonToGenerate;
             if (menu.welcome && menu.winOrLoose === false) obj.initialisation();
             menu.hud.push(menu.rectangle);
             if (obj.hasNeverTurn && !menu.helper && menu.winOrLoose === false) obj.skip = obj.generatorLevel.generatorMenu.genTextSkip();
             menu.clearHud();
             advancedTexture.dispose();
+            if(obj.hasNeverTurn===false && (obj.level % obj.nbrLevel) === 11) {
+                var fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.scene, null, {loop: false, autoplay: true});
+                obj.printer.printFight();
+            }
             obj.canMove = !obj.hasNeverTurn || menu.helper;
             obj.turn = obj.hasNeverTurn && !menu.helper;
         });
@@ -68,6 +73,7 @@ export default class Menu {
         let main = this;
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function () {
+            main.soundClic();
             myText.dispose();
             main.clearHud();
             main.genTextHelp(advancedTexture, myText);
@@ -88,6 +94,7 @@ export default class Menu {
         let main = this;
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function () {
+            main.soundClic();
             myText.dispose();
             main.clearHud();
             main.genTextStory(advancedTexture, myText);
@@ -108,6 +115,7 @@ export default class Menu {
         let main = this;
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function () {
+            main.soundClic()
             myText.dispose();
             main.clearHud();
             main.genAllLevel();
@@ -253,6 +261,7 @@ export default class Menu {
         let main = this.main;
         button1.onPointerUpObservable.add(function () {
             if (main.canMove) {
+                obj.soundClic();
                 if (main.cameraToMove) main.resetCamera();
                 obj.menuMain(i, img, true)
             }
@@ -289,6 +298,7 @@ export default class Menu {
         this.hud.push(myText, button1);
         let main = this;
         button1.onPointerUpObservable.add(function () {
+            main.soundClic();
             main.clearHud();
             advancedTexture.addControl(myText);
             let buttonStart = main.genButtonStart(advancedTexture);
@@ -319,6 +329,7 @@ export default class Menu {
             let menu = this;
             this.hud.push(this.levels[i]);
             this.levels[i].onPointerUpObservable.add(function () {
+                menu.soundClic();
                 menu.hud.push(menu.rectangle);
                 menu.clearHud();
                 menu.rectangle.dispose();
@@ -332,5 +343,10 @@ export default class Menu {
             });
             advancedTexture.addControl(this.levels[i]);
         }
+    }
+
+    soundClic(){
+        var clic = new BABYLON.Sound("clic", "sounds/clic.wav", this.main.scene, null, {loop: false, autoplay: true});
+
     }
 }

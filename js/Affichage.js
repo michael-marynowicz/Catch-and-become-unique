@@ -60,4 +60,16 @@ export default class Affichage {
 
     }
 
+    printFight(){
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
+        let fight = new BABYLON.GUI.Image("name", "images/fight.png")
+        fight.width = "45%";
+        fight.height = "50%";
+        fight.alpha = 0.9;
+        advancedTexture.addControl(fight);
+        setTimeout(()=>{
+            advancedTexture.dispose();
+        },800);
+    }
+
 }
