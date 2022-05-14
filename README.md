@@ -1,4 +1,5 @@
 # Catch-and-become-unique
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 Rendu 15/05/2022
 
@@ -8,6 +9,7 @@ Rendu 15/05/2022
 
 **Comment jouer**
 ---
+Vous pouvez accéder au directement en jeu en cliquant sur le <a href="https://michael-marynowicz.github.io/Catch-and-become-unique/">github-page</a>
 - 'z' ou fleche du haut = deplacer vers l'avant. 
 - 's' ou fleche du bas = deplacer vers l'arriere. 
 - 'q' ou fleche de gauche = deplacer vers la gauche. 
@@ -17,9 +19,13 @@ Rendu 15/05/2022
 
 **Aides**
 ---
-> Au debut de chaque niveau il y a un bouton "help" pour vous rappeler les touches utiles et un bouton "story" pour vous expliquer l'histoire du niveau.
-> De plus, ces boutons sont accessibles à nimporte quel moment dans le jeu en cliquant sur "?"
+* Au debut de chaque niveau il y a un bouton "help" pour vous rappeler les touches utiles.
+* De plus, vous pouvez mettre le jeu en pause et accèder a nimporte quel bouton en cliquant sur le bouton "?" situé en bas a droite de votre écran.
 
+**Story**
+---
+Au fur et a mesure des niveaux suivez l'hitoires du voyage de la terre en cliquant sur ``Story``avant chaque debut de niveau.
+> Pensez aussi à cliquer sur le bouton ``Story`` apres avoir gagné ou perdu pour voir les repercutions de votre reussite/defaite.
 
 **Améliorations futures**
 ---
