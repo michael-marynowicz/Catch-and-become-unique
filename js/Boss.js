@@ -12,10 +12,8 @@ export default class Boss {
         boule.speed = 2;
         boule.applyGravity = true;
         boule.material = new BABYLON.StandardMaterial("s-mat", this.scene);
-        boule.material.diffuseTexture = new BABYLON.Texture("images/lightning.jpg", this.scene);
-        boule.material.emissiveColor = new BABYLON.Color3.Red;
+        boule.material.diffuseTexture = new BABYLON.Texture("images/mars.jpeg", this.scene);
         boule.material.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        boule.material.diffuseTexture.uScale *= 4;
         var shadowGenerator = new BABYLON.ShadowGenerator(1024, this.main.light);
         shadowGenerator.addShadowCaster(boule);
         shadowGenerator.useExponentialShadowMap = true;
