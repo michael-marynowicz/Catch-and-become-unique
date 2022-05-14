@@ -29,20 +29,13 @@ export default class Obstacles {
             gravity: 18,
             friction: 0.1,
         }, this.scene);
-        /*var grid = new BABYLON.GridMaterial("grid", this.scene);
-        grid.gridRatio = 5;
-        grid.majorUnitFrequency = 10;
-        grid.mainColor = new BABYLON.Color3(1, 1, 1);
-        grid.lineColor = new BABYLON.Color3(0.0, 1.0, 0.0);
-        step.material = grid;
-        step.receiveShadows = true;*/
 
         step.material = new BABYLON.StandardMaterial("stepMaterial", this.scene);
         step.receiveShadows = true;
         step.material.diffuseTexture = texture ? new BABYLON.Texture(texture) : new BABYLON.Texture("images/asteroid.jpg");
         step.checkCollisions = true;
         step.position = new BABYLON.Vector3(x, y, z);
-        if (sound) {
+        if (sound===true) {
             this.main.allStep[this.main.ind] = step;
             this.main.ind += 1;
         }
@@ -52,22 +45,6 @@ export default class Obstacles {
         shadowGenerator.addShadowCaster(this.main.boule);
         shadowGenerator.useExponentialShadowMap = true;
         return step;
-    }
-
-    createMontagne() {
-        const ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("gdhm", "images/heightMap.png", {
-            width: 505,
-            height: 505,
-            subdivisions: 500,
-            maxHeight: 60
-        });
-        ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.MeshImpostor, {
-            mass: 0,
-            friction: 0,
-            restitution: 0.3
-        });
-        ground.checkCollisions = true;
-        ground.position = new BABYLON.Vector3(50, 0, 0);
     }
 
     stepByStep(x, z) {
@@ -97,7 +74,7 @@ export default class Obstacles {
 
         poutre.position = new BABYLON.Vector3(x + 53, 14, z);
         poutre.material = new BABYLON.StandardMaterial("buche", this.scene);
-        poutre.material.diffuseTexture = new BABYLON.Texture("images/poutre2.jpg");
+        poutre.material.diffuseTexture = new BABYLON.Texture("images/poutre.jpg");
         poutre.rotate(BABYLON.Axis.Z, 1.57);
         poutre.checkCollisions = true;
 
@@ -567,7 +544,7 @@ export default class Obstacles {
     }
 
     ascenseur(x, y, z) {
-        let ascenseur = this.createStep(20, 20, x, y, z, true);
+        let ascenseur = this.createStep(20, 20, x, y, z, true,"images/lift.jpeg");
         let life = this.generatorToken.createLife(x, y + 5, z);
         ascenseur.addChild(life);
         if (!this.main.boule.actionManager) this.main.boule.actionManager = new BABYLON.ActionManager(this.scene);
@@ -595,14 +572,13 @@ export default class Obstacles {
         for (let i = 0; i < 4; i++) {
             let acc = i * 20;
             let rotation = 0;
-            allStep[i] = this.createStep(20, 10, x + acc, y - acc, i % 2 === 0 ? z - 20 : z + 20, true);
+            allStep[i] = this.createStep(20, 10, x + acc, y - acc, i % 2 === 0 ? z - 20 : z + 20, true,"images/fleche2.jpg");
             allStep[i].rotate(BABYLON.Axis.X, rotation = i % 2 === 0 ? 0.5 : -0.5);
             allStep[i].rotate(BABYLON.Axis.Y, rotation = i % 2 === 0 ? -0.6 : 0.6);
             allStep[i].rotate(BABYLON.Axis.Z, 0.1);
             this.generatorToken.createJeton(this.nbrJeton, x + acc, y - acc + 3, i % 2 === 0 ? z - 20 : z + 20);
             this.nbrJeton -= 1;
         }
-
     }
 
     duelFinal() {

@@ -332,7 +332,7 @@ export default class GeneratorLevel {
             this.pique[i] = i === 0 ? this.obstacle.createPique(60, this.main.respawn.y - 5, this.main.respawn.z) : this.obstacle.createPique(110, this.main.respawn.y, this.main.respawn.z + acc, sens = i !== 2);
             if (i > 0) this.pique[i].rotate(BABYLON.Axis.X, this.rotation = i === 1 ? -1.57 : 1.57);
         }
-        let step3 = this.obstacle.createStep(7, 130, this.main.respawn.x + 180, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor2.jpeg");
+        let step3 = this.obstacle.createStep(7, 130, this.main.respawn.x + 180, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor2.jpg");
 
         this.manche = this.obstacle.createBoulet(this.main.respawn.x + 180, this.main.respawn.y + 20, this.main.respawn.z);
 
@@ -360,7 +360,7 @@ export default class GeneratorLevel {
 
         this.ascenseur = this.obstacle.ascenseur(this.main.respawn.x + 130, this.main.respawn.y - 5, this.main.respawn.z);
 
-        let step2 = this.obstacle.createStep(10, 80, this.main.respawn.x + 190, this.main.respawn.y + 65, this.main.respawn.z, true);
+        let step2 = this.obstacle.createStep(10, 80, this.main.respawn.x + 190, this.main.respawn.y + 65, this.main.respawn.z, true,"images/corridor2.jpg");
         step2.rotate(BABYLON.Axis.Y, this.rotation);
 
         this.obstacle.stepIncline(this.main.respawn.x + 260, this.main.respawn.y + 65, this.main.respawn.z)
