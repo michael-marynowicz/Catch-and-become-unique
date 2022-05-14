@@ -32,7 +32,6 @@ export default class Affichage {
             image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
             image.left = `${acc + 3} px`;
             this.main.life[i] = image;
-            //this.main.scene.advancedTexture.addControl(image);
             acc = 50 * i;
         }
 

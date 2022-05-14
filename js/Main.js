@@ -315,10 +315,11 @@ export default class Main {
                 },
                 () => {
                     if (step.physicsImpostor && this.inputStates.space) {
-                        var music = new BABYLON.Sound("Violons", this.rebond[this.ind_rebond++%this.rebond.length], this.scene, null, {
+                        var music = new BABYLON.Sound("Violons", this.rebond[this.ind_rebond%this.rebond.length], this.scene, null, {
                             loop: false,
                             autoplay: true
                         });
+                        this.ind_rebond+=1;
                         music.setVolume(5);
                     }
 
@@ -386,7 +387,6 @@ export default class Main {
     }
 
     resetGame() {
-        //this.music.stop();
         this.nbrLife = 3;
         this.hasNeverTurn = true;
         if (this.key) delete this.key;

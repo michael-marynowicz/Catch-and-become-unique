@@ -143,7 +143,6 @@ export default class Obstacles {
     }
 
     coffreFort(x, y, z) {
-        //TODO faire un beau coffre
         let cote1 = this.createStep(20, 20, x + 10, y + 10, z + 10, false, "images/bunker.png");
         let faille = this.createStep(20, 20, x - 10, y + 10, z + 10, false, "images/bunker.png");
         let cote2 = this.createStep(22, 20, x, y + 10, z, false, "images/bunker.png");
@@ -361,7 +360,6 @@ export default class Obstacles {
             step.addChild(barre[i]);
 
         }
-        //TODO factoriser
         barre[0].position = new BABYLON.Vector3(-3, 2, -3);
         barre[1].position = new BABYLON.Vector3(-3, 2, 0);
         barre[2].position = new BABYLON.Vector3(-3, 2, 3);

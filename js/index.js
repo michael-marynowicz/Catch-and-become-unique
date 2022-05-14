@@ -72,7 +72,6 @@ function createGround(scene, x, y, z, id) {
         restitution: -1
     }, scene);
     ground.material = new BABYLON.StandardMaterial("groundMaterial" + id, scene);
-    //ground.material.diffuseTexture = new BABYLON.Texture("images/diffuse.jpg", scene);
     ground.checkCollisions = true;
     ground.position = new BABYLON.Vector3(x, y, z);
     ground.wireframe = true;
