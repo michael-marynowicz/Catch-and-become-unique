@@ -24,6 +24,8 @@ export default class Main {
     camera;
     turn = true;
     isDead=false;
+    rebond=["sounds/Pyanno_1.mp3","sounds/Pyanno_2.mp3","sounds/Pyanno_3.mp3","sounds/Pyanno_4.mp3"]
+    ind_rebond=0;
 
 
     constructor(scene, ground, respawnPoint) {
@@ -38,6 +40,7 @@ export default class Main {
             loop: true,
             autoplay: true
         });
+        this.music_fond.setVolume(0.5)
         this.generatorParticles = new Particles(scene);
     }
 
@@ -312,10 +315,11 @@ export default class Main {
                 },
                 () => {
                     if (step.physicsImpostor && this.inputStates.space) {
-                        var music = new BABYLON.Sound("Violons", "sounds/rebond.wav", this.scene, null, {
+                        var music = new BABYLON.Sound("Violons", this.rebond[this.ind_rebond++%this.rebond.length], this.scene, null, {
                             loop: false,
                             autoplay: true
                         });
+                        music.setVolume(5);
                     }
 
                 }));
