@@ -34,7 +34,7 @@ export default class Main {
         this.allJeton = 5; // nombre de jetons crée au total dans le niveau
         this.respawn = respawnPoint;
         this.printer = new Affichage(this);
-        this.music_fond = new BABYLON.Sound("music_fond", "sounds/music_fond.wav", scene, null, {
+        this.music_fond = new BABYLON.Sound("music_fond", "sounds/music_fond2.wav", scene, null, {
             loop: true,
             autoplay: true
         });
