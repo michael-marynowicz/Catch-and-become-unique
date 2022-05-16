@@ -9,7 +9,7 @@ Rendu 15/05/2022
 
 **Comment jouer**
 ---
-Vous pouvez directement accéder au jeu en cliquant sur le <a href="https://michael-marynowicz.github.io/Catch-and-become-unique/">github-page</a>
+Vous pouvez directement accéder au jeu en cliquant sur le <a href="https://catch-and-become-unique.herokuapp.com/">serveur</a>
 - 'z' ou fleche du haut = deplacer vers l'avant. 
 - 's' ou fleche du bas = deplacer vers l'arriere. 
 - 'q' ou fleche de gauche = deplacer vers la gauche. 
