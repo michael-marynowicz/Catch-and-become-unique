@@ -263,7 +263,7 @@ export default class Menu {
             if (main.canMove) {
                 obj.soundClic();
                 if (main.cameraToMove) main.resetCamera();
-                obj.menuMain(i, img, true)
+                obj.menuMain(obj.level, img, true)
             }
         });
         advancedTexture.addControl(button1);
