@@ -12,6 +12,7 @@ export default class Menu {
     clearHud() {
         this.hud.forEach(element => element.dispose());
         this.hud = [];
+        if(this.advancedTexture)this.advancedTexture=undefined;
     }
 
     createText(text) {
@@ -29,6 +30,7 @@ export default class Menu {
 
 
     genButtonStart(advancedTexture) {
+        this.advancedTexture=advancedTexture;
         let text = this.winOrLoose === true ? "RESTART" : "START GAME";
         let button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", text);
         button1.fontSize = "4%";
@@ -43,21 +45,25 @@ export default class Menu {
         let menu = this;
         this.hud.push(button1);
         button1.onPointerUpObservable.add(function () {
-            menu.soundClic();
-            obj.nbrJetonToGenerate = (menu.welcome || menu.winOrLoose) ? 0 : obj.nbrJetonToGenerate;
-            if (menu.welcome && menu.winOrLoose === false) obj.initialisation();
-            menu.hud.push(menu.rectangle);
-            if (obj.hasNeverTurn && !menu.helper && menu.winOrLoose === false) obj.skip = obj.generatorLevel.generatorMenu.genTextSkip();
-            menu.clearHud();
-            advancedTexture.dispose();
-            if(obj.hasNeverTurn===false && (obj.level % obj.nbrLevel) === 11) {
-                var fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.scene, null, {loop: false, autoplay: true});
-                obj.printer.printFight();
-            }
-            obj.canMove = !obj.hasNeverTurn || menu.helper;
-            obj.turn = obj.hasNeverTurn && !menu.helper;
+            menu.pressStartButton(advancedTexture);
         });
         return button1;
+    }
+
+    pressStartButton(advancedTexture){
+        this.soundClic();
+        this.main.nbrJetonToGenerate = (this.welcome || this.winOrLoose) ? 0 : this.main.nbrJetonToGenerate;
+        if (this.welcome && this.winOrLoose === false) this.main.initialisation();
+        this.hud.push(this.rectangle);
+        if (this.main.hasNeverTurn && !this.helper && this.winOrLoose === false) this.main.skip = this.main.generatorLevel.generatorMenu.genTextSkip();
+        this.clearHud();
+        advancedTexture.dispose();
+        if(this.main.hasNeverTurn===false && (this.main.level % this.main.nbrLevel) === 11) {
+            var fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.main.scene, null, {loop: false, autoplay: true});
+            this.main.printer.printFight();
+        }
+        this.main.canMove = !this.main.hasNeverTurn || this.helper;
+        this.main.turn = this.main.hasNeverTurn && !this.helper;
     }
 
     genButtonHelp(btnStart, advancedTexture, myText) {

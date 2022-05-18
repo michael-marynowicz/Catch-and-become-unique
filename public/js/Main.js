@@ -228,6 +228,9 @@ export default class Main {
                     this.canMove=true;
                     this.resetCamera();
                 }
+                if(this.generatorMenu.advancedTexture){
+                    this.generatorMenu.pressStartButton(this.generatorMenu.advancedTexture)
+                }
             }
 
         }, false);
@@ -336,7 +339,7 @@ export default class Main {
             this.pique = false;
             this.resetBoulePosition()
             this.life[this.nbrLife].dispose();
-            if (this.generatorLevel.generatorMenu.winOrLoose===false)this.nbrLife -= 1;
+            if (this.generatorMenu.winOrLoose===false)this.nbrLife -= 1;
             if (this.nbrLife === 0) {
                 var gameover = new BABYLON.Sound("gameover", "sounds/game_over.wav", this.scene, null, {
                     loop: false,
@@ -355,8 +358,8 @@ export default class Main {
                 loop: true,
                 autoplay: true
             });
-            if (this.generatorLevel.generatorMenu.winOrLoose===false){
-                this.generatorLevel.generatorMenu.menuMain(this.level % this.nbrLevel);
+            if (this.generatorMenu.winOrLoose===false){
+                this.generatorMenu.menuMain(this.level % this.nbrLevel);
             }
             if (this.floorisLava || this.level % this.nbrLevel === 11) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
                 if (this.affichage) this.affichage.dispose();
@@ -419,7 +422,7 @@ export default class Main {
     winOrLoose(win){
         let title = win===true ? "You Win" : "You Loose";
         let img = win === true ? "images/win.jpg" : "images/loose.jpeg";
-        this.generatorLevel.generatorMenu.menuMain(undefined, img, false, title,true);
+        this.generatorMenu.menuMain(undefined, img, false, title,true);
         this.setLevel(0);
         this.resetGame();
     }

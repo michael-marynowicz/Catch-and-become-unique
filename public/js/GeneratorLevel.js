@@ -19,6 +19,7 @@ export default class GeneratorLevel {
         this.printer = new Affichage(main);
         this.generatorToken = new GeneratorToken(main);
         this.generatorMenu = new Menu(this.main);
+        this.main.generatorMenu=this.generatorMenu;
     }
 
 
@@ -206,7 +207,7 @@ export default class GeneratorLevel {
         this.obstacle.createStep(17, 17, this.main.respawn.x + 30, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.obstacle.createStep(15, 15, this.main.respawn.x + 60, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.obstacle.createStep(12, 12, this.main.respawn.x + 90, this.main.respawn.y - 5, this.main.respawn.z, true)
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 165, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor.jpg");
+        this.obstacle.createStep(100, 8, this.main.respawn.x + 165, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor.jpg");
         this.obstacle.createStep(10, 10, this.main.respawn.x + 240, this.main.respawn.y - 5, this.main.respawn.z, true)
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 30, this.main.respawn.y - 2, this.main.respawn.z);
         this.nbrJeton -= 1;
@@ -227,27 +228,27 @@ export default class GeneratorLevel {
         this.main.allJeton = 5;
         this.obstacle.createStep(10, 10, this.main.respawn.x, this.main.respawn.y - 5, this.main.respawn.z, true);
 
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 75, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor.jpg");
+        this.obstacle.createStep(100, 8, this.main.respawn.x + 75, this.main.respawn.y - 5, this.main.respawn.z, true, "images/corridor.jpg");
 
-        let stepD = this.obstacle.createStep(23, 7, this.main.respawn.x + 128.5, this.main.respawn.y - 5, this.main.respawn.z - 9, true, "images/corridor.jpg");
+        let stepD = this.obstacle.createStep(26, 8, this.main.respawn.x + 129, this.main.respawn.y - 5, this.main.respawn.z - 9, true, "images/corridor.jpg");
         stepD.rotate(BABYLON.Axis.Y, 1.57);
 
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 128.5, this.main.respawn.y - 2, this.main.respawn.z);
         this.nbrJeton -= 1;
 
-        this.obstacle.createStep(93.5, 5, this.main.respawn.x + 178.8, this.main.respawn.y - 5, this.main.respawn.z - 18, true, "images/corridor.jpg");
-        this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 225, this.main.respawn.y - 2, this.main.respawn.z - 17);
+        this.obstacle.createStep(91.3, 8, this.main.respawn.x + 178.6, this.main.respawn.y - 5, this.main.respawn.z - 18, true, "images/corridor.jpg");
+        this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 225, this.main.respawn.y - 2, this.main.respawn.z - 18);
         this.nbrJeton -= 1;
 
-        let stepG = this.obstacle.createStep(200, 5, this.main.respawn.x + 228, this.main.respawn.y - 5, this.main.respawn.z - 10, true, "images/corridor.jpg");
+        let stepG = this.obstacle.createStep(203.7, 8, this.main.respawn.x + 228, this.main.respawn.y - 5, this.main.respawn.z - 10, true, "images/corridor.jpg");
         stepG.rotate(BABYLON.Axis.Y, 1.57);
         this.generatorToken.createLife(this.main.respawn.x + 228, this.main.respawn.y, this.main.respawn.z - 109)
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 235, this.main.respawn.y - 5.1, this.main.respawn.z - 50, true, "images/corridor.jpg");
+        this.obstacle.createStep(100, 8, this.main.respawn.x + 235, this.main.respawn.y - 5.1, this.main.respawn.z - 50, true, "images/corridor.jpg");
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 284, this.main.respawn.y - 2, this.main.respawn.z - 50);
         this.nbrJeton -= 1;
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 186, this.main.respawn.y - 2, this.main.respawn.z - 50);
         this.nbrJeton -= 1;
-        this.obstacle.createStep(100, 5, this.main.respawn.x + 280, this.main.respawn.y - 5.1, this.main.respawn.z + 87.5, true, "images/corridor.jpg");
+        this.obstacle.createStep(100, 8, this.main.respawn.x + 280, this.main.respawn.y - 5.1, this.main.respawn.z + 87.5, true, "images/corridor.jpg");
         this.generatorToken.createJeton(this.nbrJeton, this.main.respawn.x + 330, this.main.respawn.y - 2, this.main.respawn.z + 87.5);
         this.nbrJeton -= 1;
 
@@ -282,7 +283,7 @@ export default class GeneratorLevel {
 
 
         this.obstacle.poutre(140, 0);
-        this.obstacle.createStep(100, 5, 320, 10, -10, true, "images/corridor.jpg");
+        this.obstacle.createStep(100, 8, 320, 10, -10, true, "images/corridor.jpg");
         this.obstacle.createStep(100, 100, 435, 10, 0, true);
         this.obstacle.coffreFort(469, 12, 20);
         this.obstacle.createKey(277, 8, 10);
