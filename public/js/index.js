@@ -12,9 +12,19 @@ let obstacle;
 let light;
 let reLoadLevel;
 
+function init()
+{
+    canvas = document.getElementById("myCanvas");
+    canvas.width = document.body.clientWidth; //document.width is obsolete
+    canvas.height = document.body.clientHeight; //document.height is obsolete
+}
 
 function startGame() {
+    init();
     canvas = document.querySelector("#myCanvas");
+    /*$(window).resize(function() {
+        canvas.height(canvas.width() / 2.031);
+    });*/
     engine = new BABYLON.Engine(canvas, true);
 
     scene = createScene();

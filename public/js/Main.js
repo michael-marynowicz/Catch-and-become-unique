@@ -323,7 +323,7 @@ export default class Main {
                             autoplay: true
                         });
                         this.ind_rebond+=1;
-                        music.setVolume(5);
+                        music.setVolume(15);
                     }
 
                 }));
