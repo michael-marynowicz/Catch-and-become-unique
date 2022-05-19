@@ -48,7 +48,7 @@ export default class Genie {
         button1.cornerRadius = 20;
         button1.background = "rgba(0, 0, 0, 0.5)";
 
-        var button2 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Speed");
+        var button2 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Punch");
         button2.fontSize = "5%";
         button2.width = "10%";
         button2.height = "10%";
@@ -69,7 +69,7 @@ export default class Genie {
         });
         button2.onPointerUpObservable.add(function () {
             obj.nbrJetonToGenerate = 0;
-            obj.boule.speed += 2;
+            obj.canPush =true;
             advancedTexture.dispose();
 
         });

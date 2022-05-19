@@ -10,6 +10,7 @@ export default class Main {
     ind = 0;
     allObstacles = [];
     jump = true;
+    canPush=false;
     impulseDown = false;
     level = 0;
     nbrLevel = 12;
@@ -153,19 +154,23 @@ export default class Main {
                     this.impulseDown = false;
                 }
                 if (this.inputStates.up && velocityLin.x < 30) {
+                    if (this.inputStates.b && this.canPush===true) this.punch();
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z - this.boule.speed + this.boule.speed / 1.5, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x + this.boule.speed, velocityLin.y, velocityLin.z));
 
                 }
                 if (this.inputStates.down && velocityLin.x > -30) {
+                    if (this.inputStates.b&& this.canPush===true) this.punch()
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z + this.boule.speed - this.boule.speed / 1.5, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x - this.boule.speed, velocityLin.y, velocityLin.z));
                 }
                 if (this.inputStates.left && velocityLin.z < 30) {
+                    if (this.inputStates.b&& this.canPush===true) this.punch()
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x + this.boule.speed - this.boule.speed / 1.5, 0, 0, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x, velocityLin.y, velocityLin.z + this.boule.speed));
                 }
                 if (this.inputStates.right && velocityLin.z > -30) {
+                    if (this.inputStates.b && this.canPush===true) this.punch()
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x - this.boule.speed + this.boule.speed / 1.5, 0, 0, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x, velocityLin.y, velocityLin.z - this.boule.speed));
                 }
@@ -204,6 +209,8 @@ export default class Main {
         this.inputStates.up = false;
         this.inputStates.down = false;
         this.inputStates.space = false;
+        this.inputStates.p = false;
+        this.inputStates.b = false;
         //add the listener to the main, window object, and update the states
         window.addEventListener('keydown', (event) => {
             if ((event.key === "ArrowLeft") || (event.key === "q") || (event.key === "Q")) {
@@ -218,6 +225,8 @@ export default class Main {
                 this.inputStates.space = true;
             } else if (event.key === "p") {
                 this.inputStates.p = true;
+            } else if (event.key === "b") {
+                this.inputStates.b = true;
             } else if (event.keyCode === 13) {
                 if(this.turn){
                     if(this.skip){
@@ -252,8 +261,70 @@ export default class Main {
                     this.resetCamera();
                 }
                 this.inputStates.p = false;
+            } else if (event.key === "b") {
+                this.boule.speed = 2;
+
+                this.inputStates.b = false;
             }
         }, false);
+    }
+
+    punch(){
+        this.boule.speed*=60;
+        this.canPush=false;
+
+        // PARTICULES
+        var particleSystem = new BABYLON.ParticleSystem("particles", 20000, this.scene);
+
+        //Texture of each particle
+        particleSystem.particleTexture = new BABYLON.Texture("/textures/flare.png", this.scene);
+
+        // Where the particles come from
+        particleSystem.emitter = this.boule; // the starting object, the emitter
+        particleSystem.minEmitBox = new BABYLON.Vector3(-1, 0, -1); // Starting all from
+        particleSystem.maxEmitBox = new BABYLON.Vector3(1, 0, 1); // To...
+
+        // Colors of all particles
+        particleSystem.color1 = new BABYLON.Color4(0, 0.8, 1.0, 1.0);
+        particleSystem.color2 = new BABYLON.Color4(0, 1, 0, 1.0);
+        particleSystem.colorDead = new BABYLON.Color4(0, 1.0, 0, 1.0);
+
+        // Size of each particle (random between...
+        particleSystem.minSize = 0.5;
+        particleSystem.maxSize = 0.9;
+
+        // Life time of each particle (random between...
+        particleSystem.minLifeTime = 0.3;
+        particleSystem.maxLifeTime = 0.5;
+
+        // Emission rate
+        particleSystem.emitRate = 20000;
+
+        // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
+        particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+        // Set the gravity of all particles
+        particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
+
+        // Direction of each particle after it has been emitted
+        particleSystem.direction1 = new BABYLON.Vector3(5, 0, 0);
+        particleSystem.direction2 = new BABYLON.Vector3(-5, 0, 0);
+
+        // Angular speed, in radians
+        particleSystem.minAngularSpeed = 0;
+        particleSystem.maxAngularSpeed = Math.PI;
+
+        particleSystem.minEmitPower = 1;
+        particleSystem.maxEmitPower = 5;
+        particleSystem.updateSpeed = 0.005;
+        this.particulePush=particleSystem;
+        particleSystem.start();
+        setTimeout(()=>{
+            this.particulePush.stop();
+        },1000)
+        setTimeout(()=>{
+            this.canPush=true;
+        },2000);
     }
 
 
