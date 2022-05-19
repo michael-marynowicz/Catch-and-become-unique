@@ -131,8 +131,6 @@ export default class Main {
         boule.material = new BABYLON.StandardMaterial("s-mat", this.scene);
         boule.material.diffuseTexture = new BABYLON.Texture("images/earth.jpg", this.scene);
         boule.material.emissiveColor = new BABYLON.Color3.White;
-        /*boule.material.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        boule.material.diffuseTexture.uScale *= 4;*/
 
 
         boule.physicsImpostor = new BABYLON.PhysicsImpostor(boule, BABYLON.PhysicsImpostor.SphereImpostor, {
@@ -272,6 +270,10 @@ export default class Main {
     punch(){
         this.boule.speed*=60;
         this.canPush=false;
+        var nitro = new BABYLON.Sound("music_fond", "sounds/nitro.mp3", this.scene, null, {
+            loop: false,
+            autoplay: true
+        });
 
         // PARTICULES
         var particleSystem = new BABYLON.ParticleSystem("particles", 20000, this.scene);

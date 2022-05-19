@@ -12,19 +12,10 @@ let obstacle;
 let light;
 let reLoadLevel;
 
-function init()
-{
-    canvas = document.getElementById("myCanvas");
-    canvas.width = document.body.clientWidth; //document.width is obsolete
-    canvas.height = document.body.clientHeight; //document.height is obsolete
-}
+
 
 function startGame() {
-    init();
     canvas = document.querySelector("#myCanvas");
-    /*$(window).resize(function() {
-        canvas.height(canvas.width() / 2.031);
-    });*/
     engine = new BABYLON.Engine(canvas, true);
 
     scene = createScene();
@@ -36,12 +27,11 @@ function startGame() {
     main.light = light;
 
     main.generatorLevel = new GeneratorLevel(obstacle, main);
-    scene.activeCamera = main.createArcCamera(scene, new BABYLON.Vector3(0,0,0));
-    main.level=0;
+    scene.activeCamera = main.createArcCamera(scene, new BABYLON.Vector3(0, 0, 0));
+    main.level = 0;
 
     engine.runRenderLoop(() => {
-
-        if (main.boule){
+        if (main.boule) {
             reLoadLevel = main.events(ground);
             main.boule.move();
         }
@@ -55,10 +45,6 @@ function startGame() {
         main.generatorLevel.generateLevel();
     });
 }
-
-window.addEventListener("resize", () => {
-    engine.resize()
-});
 
 function createScene() {
     let scene = new BABYLON.Scene(engine);
