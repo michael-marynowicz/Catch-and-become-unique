@@ -223,7 +223,7 @@ export default class Main {
                 this.inputStates.space = true;
             } else if (event.key === "p") {
                 this.inputStates.p = true;
-            } else if (event.key === "b") {
+            } else if (event.key === "b" && (this.level % this.nbrLevel) === 11) {
                 this.inputStates.b = true;
             } else if (event.keyCode === 13) {
                 if(this.turn){
@@ -235,9 +235,9 @@ export default class Main {
                     this.canMove=true;
                     this.resetCamera();
                 }
-                if(this.generatorMenu.advancedTexture){
-                    this.generatorMenu.pressStartButton(this.generatorMenu.advancedTexture)
-                }
+                if(this.generatorMenu.advancedTexture)this.generatorMenu.pressStartButton(this.generatorMenu.advancedTexture)
+
+                if(this.generatorMenu.pushBonus===true)this.generatorMenu.pushMenu();
             }
 
         }, false);
@@ -261,7 +261,6 @@ export default class Main {
                 this.inputStates.p = false;
             } else if (event.key === "b") {
                 this.boule.speed = 2;
-
                 this.inputStates.b = false;
             }
         }, false);
@@ -274,6 +273,7 @@ export default class Main {
             loop: false,
             autoplay: true
         });
+        this.generatorMenu.progressBarPush();
 
         // PARTICULES
         var particleSystem = new BABYLON.ParticleSystem("particles", 20000, this.scene);
@@ -407,6 +407,7 @@ export default class Main {
 
     events(ground) {
         if (this.boule.intersectsMesh(ground, true) || this.pique) {
+            this.generatorMenu.clearHud();
             this.resetCamera();
             this.hasNeverTurn = false;
             this.pique = false;
@@ -488,6 +489,7 @@ export default class Main {
     setLevel(i){
         this.level=i;
         this.generatorLevel.createNewLevel=true;
+        this.generatorMenu.clearHud();
         this.turn=true;
 
 
@@ -495,8 +497,8 @@ export default class Main {
     winOrLoose(win){
         let title = win===true ? "You Win" : "You Loose";
         let img = win === true ? "images/win.jpg" : "images/loose.jpeg";
-        this.generatorMenu.menuMain(undefined, img, false, title,true);
         this.setLevel(0);
+        this.generatorMenu.menuMain(undefined, img, false, title,true);
         this.resetGame();
     }
 

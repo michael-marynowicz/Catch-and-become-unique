@@ -35,11 +35,27 @@ export default class Obstacles {
         step.material.diffuseTexture = texture ? new BABYLON.Texture(texture) : new BABYLON.Texture("images/asteroid.jpg");
         step.checkCollisions = true;
         step.position = new BABYLON.Vector3(x, y, z);
-        if (sound===true) {
+        if (sound === true) {
             this.main.allStep[this.main.ind] = step;
             this.main.ind += 1;
-        }
+        } else {
+            step.actionManager = new BABYLON.ActionManager(this.scene);
+            step.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+                {
+                    trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                    parameter: this.main.boule
+                },
+                () => {
 
+
+                    var music = new BABYLON.Sound("collision", "sounds/collision.wav", this.scene, null, {
+                        loop: false,
+                        autoplay: true
+                    });
+
+
+                }));
+        }
         this.main.allObstacles[this.main.ind++] = step;
         var shadowGenerator = new BABYLON.ShadowGenerator(1024, this.main.light);
         shadowGenerator.addShadowCaster(this.main.boule);
@@ -308,7 +324,7 @@ export default class Obstacles {
         poutres[0].physicsImpostor = new BABYLON.PhysicsImpostor(poutres[0], BABYLON.PhysicsImpostor.CylinderImpostor, {
             mass: 0,
             restitution: 0,
-            friction: 1,
+            friction: 0.1,
         }, this.scene);
         poutres[0].position = new BABYLON.Vector3(x, y, z);
         poutres[0].rotate(BABYLON.Axis.Z, 1.57);
@@ -542,7 +558,7 @@ export default class Obstacles {
     }
 
     ascenseur(x, y, z) {
-        let ascenseur = this.createStep(20, 20, x, y, z, true,"images/lift.jpeg");
+        let ascenseur = this.createStep(20, 20, x, y, z, true, "images/lift.jpeg");
         let life = this.generatorToken.createLife(x, y + 5, z);
         ascenseur.addChild(life);
         if (!this.main.boule.actionManager) this.main.boule.actionManager = new BABYLON.ActionManager(this.scene);
@@ -570,7 +586,7 @@ export default class Obstacles {
         for (let i = 0; i < 4; i++) {
             let acc = i * 20;
             let rotation = 0;
-            allStep[i] = this.createStep(20, 10, x + acc, y - acc, i % 2 === 0 ? z - 20 : z + 20, true,"images/fleche2.jpg");
+            allStep[i] = this.createStep(20, 10, x + acc, y - acc, i % 2 === 0 ? z - 20 : z + 20, true, "images/fleche2.jpg");
             allStep[i].rotate(BABYLON.Axis.X, rotation = i % 2 === 0 ? 0.5 : -0.5);
             allStep[i].rotate(BABYLON.Axis.Y, rotation = i % 2 === 0 ? -0.6 : 0.6);
             allStep[i].rotate(BABYLON.Axis.Z, 0.1);

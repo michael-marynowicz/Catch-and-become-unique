@@ -19,7 +19,7 @@ export default class GeneratorLevel {
         this.printer = new Affichage(main);
         this.generatorToken = new GeneratorToken(main);
         this.generatorMenu = new Menu(this.main);
-        this.main.generatorMenu=this.generatorMenu;
+        this.main.generatorMenu = this.generatorMenu;
     }
 
 
@@ -169,8 +169,11 @@ export default class GeneratorLevel {
                     this.initialisation();
                 }
                 if (this.main.turn) this.main.cameraToMove.turn()
-                else if(this.main.hasNeverTurn===false && !this.fight) {
-                    this.fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.scene, null, {loop: false, autoplay: true});
+                else if (this.main.hasNeverTurn === false && !this.fight) {
+                    this.fight = new BABYLON.Sound("fight", "sounds/fight.wav", this.scene, null, {
+                        loop: false,
+                        autoplay: true
+                    });
                     this.printer.printFight();
                 }
                 this.obstacle.boss.attaque(this.main.boule, this.obstacle.bossBoule);
@@ -311,7 +314,7 @@ export default class GeneratorLevel {
             this.nbrJeton -= 1;
 
         }
-        this.obstacle.createStep(10, 10, 290, this.main.respawn.y - 5, this.main.respawn.z, false);
+        this.obstacle.createStep(10, 10, 290, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.generatorToken.createJeton(this.nbrJeton, 290, this.main.respawn.y - 3, this.main.respawn.z);
         this.nbrJeton -= 1;
 
@@ -361,7 +364,7 @@ export default class GeneratorLevel {
 
         this.ascenseur = this.obstacle.ascenseur(this.main.respawn.x + 130, this.main.respawn.y - 5, this.main.respawn.z);
 
-        let step2 = this.obstacle.createStep(10, 80, this.main.respawn.x + 190, this.main.respawn.y + 65, this.main.respawn.z, true,"images/corridor2.jpg");
+        let step2 = this.obstacle.createStep(10, 80, this.main.respawn.x + 190, this.main.respawn.y + 65, this.main.respawn.z, true, "images/corridor2.jpg");
         step2.rotate(BABYLON.Axis.Y, this.rotation);
 
         this.obstacle.stepIncline(this.main.respawn.x + 260, this.main.respawn.y + 65, this.main.respawn.z)
