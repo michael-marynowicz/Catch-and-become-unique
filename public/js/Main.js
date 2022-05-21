@@ -105,14 +105,33 @@ export default class Main {
     }
 
     castRay(myMesh) {
+        this.oneTime=true;
         var ray = new BABYLON.Ray(myMesh.position, new BABYLON.Vector3(0, -1, 0), 4);
         let hit = this.scene.pickWithRay(ray, (mesh) => {
             return (mesh !== myMesh);
         });
-        if (hit.pickedMesh) console.log(hit.pickedMesh.name)
-        if (hit.pickedMesh && hit.hit===true && hit.pickedMesh.name !== "boss" && hit.pickedMesh.name !== "heroboule") {
-            this.jump = true;
-            this.impulseDown = true;
+        if(hit.pickedMesh) {
+            myMesh.actionManager = new BABYLON.ActionManager(this.scene);
+            myMesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+                {
+                    trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                    parameter: hit.pickedMesh
+                },
+                () => {
+                    this.jump = true;
+
+
+                }));
+            myMesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+                {
+                    trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                    parameter: hit.pickedMesh
+                },
+                () => {
+                    this.jump = false;
+
+
+                }));
         }
     }
 
@@ -174,6 +193,7 @@ export default class Main {
                 }
                 if (this.inputStates.space && this.jump && velocityLin.y < 15) {
                     this.jump = false;
+                    this.oneTime=false;
                     boule.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 100, 0), boule.getAbsolutePosition());
 
                 }
