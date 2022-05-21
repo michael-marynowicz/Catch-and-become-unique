@@ -171,23 +171,23 @@ export default class Main {
                     this.impulseDown = false;
                 }
                 if (this.inputStates.up && velocityLin.x < 30) {
-                    if (this.inputStates.b && this.canPush===true) this.punch();
+                    if (this.inputStates.swift && this.canPush===true) this.punch();
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z - this.boule.speed + this.boule.speed / 1.5, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x + this.boule.speed, velocityLin.y, velocityLin.z));
 
                 }
                 if (this.inputStates.down && velocityLin.x > -30) {
-                    if (this.inputStates.b&& this.canPush===true) this.punch()
+                    if (this.inputStates.swift && this.canPush===true) this.punch()
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, angularVel.z + this.boule.speed - this.boule.speed / 1.5, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x - this.boule.speed, velocityLin.y, velocityLin.z));
                 }
                 if (this.inputStates.left && velocityLin.z < 30) {
-                    if (this.inputStates.b&& this.canPush===true) this.punch()
+                    if (this.inputStates.swift && this.canPush===true) this.punch()
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x + this.boule.speed - this.boule.speed / 1.5, 0, 0, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x, velocityLin.y, velocityLin.z + this.boule.speed));
                 }
                 if (this.inputStates.right && velocityLin.z > -30) {
-                    if (this.inputStates.b && this.canPush===true) this.punch()
+                    if (this.inputStates.swift && this.canPush===true) this.punch()
                     boule.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(angularVel.x - this.boule.speed + this.boule.speed / 1.5, 0, 0, 0));
                     boule.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(velocityLin.x, velocityLin.y, velocityLin.z - this.boule.speed));
                 }
@@ -229,6 +229,7 @@ export default class Main {
         this.inputStates.space = false;
         this.inputStates.p = false;
         this.inputStates.b = false;
+        this.inputStates.swift = false;
         //add the listener to the main, window object, and update the states
         window.addEventListener('keydown', (event) => {
             if ((event.key === "ArrowLeft") || (event.key === "q") || (event.key === "Q")) {
@@ -243,8 +244,6 @@ export default class Main {
                 this.inputStates.space = true;
             } else if (event.key === "p") {
                 this.inputStates.p = true;
-            } else if (event.key === "b" && (this.level % this.nbrLevel) === 11) {
-                this.inputStates.b = true;
             } else if (event.keyCode === 13) {
                 if(this.turn){
                     if(this.skip){
@@ -258,6 +257,9 @@ export default class Main {
                 if(this.generatorMenu.advancedTexture)this.generatorMenu.pressStartButton(this.generatorMenu.advancedTexture)
 
                 if(this.generatorMenu.pushBonus===true)this.generatorMenu.pushMenu();
+            }
+            else if (event.keyCode === 16 && (this.level % this.nbrLevel) === 11) {
+                this.inputStates.swift = true;
             }
 
         }, false);
@@ -279,9 +281,9 @@ export default class Main {
                     this.resetCamera();
                 }
                 this.inputStates.p = false;
-            } else if (event.key === "b") {
+            } else if (event.keyCode === 16) {
                 this.boule.speed = 2;
-                this.inputStates.b = false;
+                this.inputStates.swift = false;
             }
         }, false);
     }
@@ -344,9 +346,7 @@ export default class Main {
         setTimeout(()=>{
             this.particulePush.stop();
         },1000)
-        setTimeout(()=>{
-            this.canPush=true;
-        },2000);
+
     }
 
 

@@ -401,9 +401,9 @@ export default class Menu {
         fleche.top = "-2%";
         fleche.left = "7%";
 
-        let letter_b = new BABYLON.GUI.Image("space", "images/letter_b.png");
-        letter_b.width = "5%";
-        letter_b.height = "6%";
+        let letter_b = new BABYLON.GUI.Image("space", "images/swift.png");
+        letter_b.width = "8%";
+        letter_b.height = "7%";
         //letter_b.left = "0.5%";
         letter_b.top = "12%";
 
@@ -435,11 +435,11 @@ export default class Menu {
         UI.adv = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI();
 
         UI.progressBar = new BABYLON.GUI.Rectangle();
-        UI.progressBar.width = "7%";
-        UI.progressBar.height = "2%";
+        UI.progressBar.width = "9%";
+        UI.progressBar.height = "3%";
         UI.progressBar.verticalAlignment = 1;
-        UI.progressBar.top = "-5%";
-        UI.progressBar.left = "-42%";
+        UI.progressBar.top = "-4.2%";
+        UI.progressBar.left = "-41%";
         UI.progressBar.isVisible = false;
         UI.progressBar.background = "black";
         UI.adv.addControl( UI.progressBar );
@@ -457,7 +457,7 @@ export default class Menu {
         push.text = "Push";
         push.outlineColor = "black";
         push.outlineWidth = 4;
-        push.fontSize = "2%";
+        push.fontSize = "3%";
         push.top = "44%";
         push.left = "-48%";
         push.color = "white";
@@ -482,6 +482,7 @@ export default class Menu {
             if(!UI.progressBar.isVisible){
                 UI.showProgressBar(beta);
             }
+            if(beta===120)this.main.canPush=true
             else {
                 UI.setProgress(beta)
             }
