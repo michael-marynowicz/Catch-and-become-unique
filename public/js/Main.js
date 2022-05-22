@@ -428,6 +428,7 @@ export default class Main {
 
     events(ground) {
         if (this.boule.intersectsMesh(ground, true) || this.pique) {
+            if (this.generatorMenu.rectangle)this.generatorMenu.hud.push(this.generatorMenu.rectangle);
             this.generatorMenu.clearHud();
             this.resetCamera();
             this.hasNeverTurn = false;
