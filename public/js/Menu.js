@@ -361,10 +361,10 @@ export default class Menu {
         rectangle.height = "50%";
         rectangle.alpha = 0.8;
         let myText = new BABYLON.GUI.TextBlock();
-        myText.text = "Congrat you have debloc the push bonus !\n " +
-            "With this level you'll push the boss in the last level more easier\n" +
-            "To use the bonus follow the tuto bellow : \n" +
-            "\r  - You have to press in the same time :\n ";
+        myText.text = "Congratulations you just unlocked the bonus Punch !\n " +
+            "With this level you'll push the boss in the last level more easily\n" +
+            "To use the bonus follow the following tutorial : \n" +
+            "\r  - You must press at the same time :\n ";
         myText.outlineColor = "black";
         myText.outlineWidth = 4;
         myText.fontSize = "2.9%";
