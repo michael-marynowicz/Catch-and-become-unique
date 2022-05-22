@@ -314,7 +314,7 @@ export default class GeneratorLevel {
             this.nbrJeton -= 1;
 
         }
-        this.obstacle.createStep(10, 10, 290, this.main.respawn.y - 5, this.main.respawn.z, true);
+        this.obstacle.createStep(11, 11, 290, this.main.respawn.y - 5, this.main.respawn.z, true);
         this.generatorToken.createJeton(this.nbrJeton, 290, this.main.respawn.y - 3, this.main.respawn.z);
         this.nbrJeton -= 1;
 

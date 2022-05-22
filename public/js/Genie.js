@@ -73,7 +73,6 @@ export default class Genie {
 
         });
         button2.onPointerUpObservable.add(function () {
-            //obj.nbrJetonToGenerate = 0;
             obj.canPush =true;
             menu.genPushBonus()
             advancedTexture.dispose();

@@ -537,7 +537,7 @@ export default class Obstacles {
                 this.monte = false
                 physicsEngine.setGravity(new BABYLON.Vector3(physicsEngine.gravity.x, -80, physicsEngine.gravity.z));
                 this.main.camera.beta = 3.14 / 3;
-                this.main.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
+                if (this.main.isDead===false)this.main.generatorLevel.generatorMenu.menuMain((this.main.level % this.main.nbrLevel));
 
             } else if (retourneCamera === true) {
                 this.monte = false;
@@ -546,7 +546,7 @@ export default class Obstacles {
                 this.main.generatorLevel.createNewLevel = retourneCamera;
                 this.main.generatorLevel.deleteLevel();
                 this.groundPlafond.dispose();
-                this.main.generatorLevel.generatorMenu.menuMain((this.level % this.nbrLevel) + 1);
+                this.main.generatorLevel.generatorMenu.menuMain((this.main.level % this.main.nbrLevel));
             }
 
         }
@@ -561,11 +561,11 @@ export default class Obstacles {
         let ascenseur = this.createStep(20, 20, x, y, z, true, "images/lift.jpeg");
         let life = this.generatorToken.createLife(x, y + 5, z);
         ascenseur.addChild(life);
-        if (!this.main.boule.actionManager) this.main.boule.actionManager = new BABYLON.ActionManager(this.scene);
-        this.main.boule.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        if (!this.main.boule.actionManager) ascenseur.actionManager = new BABYLON.ActionManager(this.scene);
+        ascenseur.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
             {
                 trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                parameter: ascenseur
+                parameter: this.main.boule
             },
             () => {
                 ascenseur.monte = true;

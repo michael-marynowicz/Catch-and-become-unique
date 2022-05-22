@@ -439,7 +439,7 @@ export default class Menu {
         UI.progressBar.height = "3%";
         UI.progressBar.verticalAlignment = 1;
         UI.progressBar.top = "-4.2%";
-        UI.progressBar.left = "-41%";
+        UI.progressBar.left = "-40%";
         UI.progressBar.isVisible = false;
         UI.progressBar.background = "black";
         UI.adv.addControl( UI.progressBar );
@@ -454,12 +454,12 @@ export default class Menu {
         UI.progressBar.addControl( UI.progressBarInner );
         let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         let push = new BABYLON.GUI.TextBlock();
-        push.text = "Push";
+        push.text = "Punch";
         push.outlineColor = "black";
         push.outlineWidth = 4;
         push.fontSize = "3%";
         push.top = "44%";
-        push.left = "-48%";
+        push.left = "-47%";
         push.color = "white";
         push.fontWeight = "bold";
 
@@ -482,10 +482,11 @@ export default class Menu {
             if(!UI.progressBar.isVisible){
                 UI.showProgressBar(beta);
             }
-            if(beta===120)this.main.canPush=true
             else {
                 UI.setProgress(beta)
             }
+            if(beta===120)this.main.canPush=true
+
             beta++
         })
     }

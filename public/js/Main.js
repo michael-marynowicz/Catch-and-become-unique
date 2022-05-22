@@ -166,7 +166,6 @@ export default class Main {
             let velocityLin = boule.physicsImpostor.getLinearVelocity();
             let angularVel = boule.physicsImpostor.getAngularVelocity();
             if (this.canMove) {
-
                 if (velocityLin.y < -1 && this.impulseDown) {
                     this.impulseDown = false;
                 }
@@ -289,7 +288,7 @@ export default class Main {
     }
 
     punch(){
-        this.boule.speed*=60;
+        this.boule.speed=120;
         this.canPush=false;
         var nitro = new BABYLON.Sound("music_fond", "sounds/nitro.mp3", this.scene, null, {
             loop: false,
@@ -345,9 +344,11 @@ export default class Main {
         particleSystem.start();
         setTimeout(()=>{
             this.particulePush.stop();
+            this.boule.speed=2;
         },1000)
 
     }
+
 
 
     collision() {
@@ -452,16 +453,16 @@ export default class Main {
                 loop: true,
                 autoplay: true
             });
+            if (this.level % this.nbrLevel === 4) {
+                this.scene.getPhysicsEngine().setGravity(new BABYLON.Vector3(this.scene.getPhysicsEngine().gravity.x, -80, this.scene.getPhysicsEngine().gravity.z));
+                return false;
+            }
             if (this.generatorMenu.winOrLoose===false){
                 this.generatorMenu.menuMain(this.level % this.nbrLevel);
             }
             if (this.floorisLava || this.level % this.nbrLevel === 11) {// si c'est le niveau floorIsLava on doit regenerer le niveau completement
                 if (this.affichage) this.affichage.dispose();
                 return true;
-            }
-            if (this.level % this.nbrLevel === 4) {
-                this.scene.getPhysicsEngine().setGravity(new BABYLON.Vector3(this.scene.getPhysicsEngine().gravity.x, -80, this.scene.getPhysicsEngine().gravity.z));
-                return false;
             }
             if (this.level % this.nbrLevel === 9) {
                 this.generatorLevel.ascenseur.position.y = this.respawn.y - 5;
