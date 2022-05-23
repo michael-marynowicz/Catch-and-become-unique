@@ -41,7 +41,7 @@ export default class Main {
             loop: true,
             autoplay: true
         });
-        this.music_fond.setVolume(0.5)
+        this.music_fond.setVolume(0.7)
         this.generatorParticles = new Particles(scene);
     }
 
@@ -417,7 +417,7 @@ export default class Main {
                             autoplay: true
                         });
                         this.ind_rebond+=1;
-                        music.setVolume(15);
+                        music.setVolume(13);
                     }
 
                 }));
