@@ -192,7 +192,7 @@ export default class Obstacles {
 
     createInvisibleHouse(x, y, z) {
         let cote1 = this.createStep(20, 20, x + 10, y + 10, z, false);
-        let coteB = this.createStep(10, 20, x - 10, y + 5, z, false);
+        let coteB = this.createStep(7, 20, x - 10, y + 5, z, false);
         let cote2 = this.createStep(22, 20, x, y + 10, z - 10, false);
         let cote3 = this.createStep(22, 20, x, y + 10, z + 10, false);
         let toit = this.createStep(22, 22, x, y + 20, z, false);
