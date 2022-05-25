@@ -398,7 +398,7 @@ export default class Obstacles {
                 case "y": {
                     dir = step.position.y;
                     axe = y;
-                    vecteur = new BABYLON.Vector3(0, 0.22, 0);
+                    vecteur = new BABYLON.Vector3(0, 0.15, 0);
                     break;
                 }
                 case "z": {
