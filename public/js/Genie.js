@@ -64,7 +64,7 @@ export default class Genie {
 
 
         button1.onPointerUpObservable.add(function () {
-            this.main.canMove=true;
+            obj.canMove=true;
             obj.nbrJetonToGenerate = 0;
             obj.nbrLife += 1;
             obj.printer.printLife();
